@@ -8,7 +8,7 @@
 <script type="text/javascript">
 
 var container, stats;
-
+var controls;
 var camera, scene, renderer;
 
 var gridHelper;
@@ -41,79 +41,94 @@ function init() {
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
+	scene = new THREE.Scene();
+
 	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+	camera.position.set(0,20,0);
+	camera.rotateX(-Math.PI/2);
+	/*
 	camera.position.y = 15;
 	camera.position.x = 50;
 	camera.position.z = 50;
 	camera.rotation.x = -0.30;
-	var controls = new THREE.OrbitControls( camera );
+	*/
+	controls = new THREE.OrbitControls( camera );
 
-	scene = new THREE.Scene();
 	//scene.background = new THREE.Color( 0xf0f0f0 );
 
 	startJimDoor();
 
 	gridHelper = new THREE.GridHelper( 100, 22 );
-	scene.add( gridHelper );
+	//scene.add( gridHelper );
 	// Cube
 
-
-makeWall2(-17.98, 16.7, 1, 19.04171);
-makeWall2(-15.7, 25.79, 5.318408, 1);
-makeWall2(11.91, -20.94, 2.125031, 1.04175);
-makeWall2(20.78, -18.87, 1, 5.138861);
-makeWall2(-13.35, -1.75, 16.2399, 1);
-makeWall2(-17.803, -11.6, 1, 19.04171);
-makeWall2(1.41, 16.38, 1, 19.04171);
-makeWall2(1.43, -11.6, 1, 19.04171);
-makeWall2(-20.987, -0.871, 1, 2.722182);
-makeWall2(1.5, -29.39, 1.3625, 1.452701);
-makeWall2(20.74, -29.39, 1.3625, 1.4527);
-makeWall2(20.02, -21.03, 2.345203, 0.9742169);
-makeWall2(1, -1.74, 2, 1);
-makeWall2(-13.45, 6.57, 16.23991, 1);
-makeWall2(1, 6.56, 1.837685, 0.97422);
-makeWall2(-6.29, 0.08, 1, 2.98912);
-makeWall2(19.28, 25.87, 4.082932, 1);
-makeWall2(0.5, -20.94, 7.530567, 1.04175);
-makeWall2(-15.83, -20.94, 5.553797, 1.04175);
-makeWall2(-21.03, 5.72, 1, 2.657);
-makeWall2(-0.25, 25.79, 6.24913, 1);
-makeWall2(9.37, 25.8, 2.719612, 1);
-makeWall2(20.78, 2.48, 1, 17.7933);
-makeWall2(20.78, 23.7, 1, 5.13886);
-
-jimDoor(18, -21, false, true, false );
-jimDoor(-1, -2,  true, true , false );
-jimDoor(-1, 7,  false, true , false );
-jimDoor(-6, 5,  false, false, false );
-jimDoor(3, 26,  false, true, true  );
-
-makeWindows(-20.98897, 2.426002, 1, 3.862499);
-makeWindows(-8.198972, 25.766, 9.638683, 1);
-makeWindows(13.97103, 25.816, 6.506104, 1);
-makeWindows(20.78103, 16.276, 1, 9.83851);
-makeWindows(20.78103, -11.334, 1, 9.83851);
-makeWindows(-8.168972, -20.954, 9.879647, 1);
-makeWindows(7.571028, -20.954, 6.502047, 1);
+	initobj(0.01);
+	initobj(0.1);
+	initobj(1);
 
 
-ground = makeCube(100,0,70,0,0,0,new THREE.Color(0x2FC313));
+function initobj(s)
+{
+	scale = s;
+makeWall2(-32.37203, 12.324, 1, 19.04171);
+makeWall2(-30.09203, 21.414, 5.318408, 1);
+makeWall2(-2.482029, -25.316, 2.125031, 1.04175);
+makeWall2(6.387972, -23.246, 1, 5.138861);
+makeWall2(-27.74203, -6.126001, 16.2399, 1);
+makeWall2(-32.19503, -15.976, 1, 19.04171);
+makeWall2(-12.98203, 12.004, 1, 19.04171);
+makeWall2(-12.96203, -15.976, 1, 19.04171);
+makeWall2(-35.37903, -5.247001, 1, 2.722182);
+makeWall2(-12.89203, -33.766, 1.3625, 1.452701);
+makeWall2(6.347971, -33.766, 1.3625, 1.4527);
+makeWall2(5.627972, -25.406, 2.345203, 0.9742169);
+makeWall2(-13.39203, -6.116001, 2, 1);
+makeWall2(-27.84203, 2.193999, 16.23991, 1);
+makeWall2(-13.39203, 2.183999, 1.837685, 0.97422);
+makeWall2(-20.68203, -4.296001, 1, 2.98912);
+makeWall2(4.887972, 21.494, 4.082932, 1);
+makeWall2(-13.89203, -25.316, 7.530567, 1.04175);
+makeWall2(-30.22203, -25.316, 5.553797, 1.04175);
+makeWall2(-35.42203, 1.343998, 1, 2.657);
+makeWall2(-14.64203, 21.414, 6.24913, 1);
+makeWall2(-5.022029, 21.424, 2.719612, 1);
+makeWall2(6.387972, -1.896001, 1, 17.7933);
+makeWall2(6.387972, 19.324, 1, 5.13886);
 
 
-makeLight(-8, -11, 1);
-
-makeLight(-8, 16, 1);
-makeLight(-13, 2,  0.5);
-makeLight(-3, 2,  0.5);
-makeLight(5, -15,  0.5);
-makeLight(16, -15, 0.5);
-makeLight(5, 3, 1);
-makeLight(16, 3, 1);
-makeLight(5, 21, 1);
-makeLight(16, 21, 1);
+jimDoor(3.93, -25.39, false, true, false );
+jimDoor(-14.84, -6.14, true, true , false );
+jimDoor(-14.807, 2.158, false, true , false );
+jimDoor(-20.62, 1.1, false, false, false );
+jimDoor(-11.1, 21.6, false, true, true );
 
 
+makeWindows(-35.381, -1.95, 1, 3.862499);
+makeWindows(-22.591, 21.39, 9.638683, 1);
+makeWindows(-0.4209995, 21.44, 6.506104, 1);
+makeWindows(6.389, 11.9, 1, 9.83851);
+makeWindows(6.389002, -15.71, 1, 9.83851);
+makeWindows(-22.561, -25.33, 9.879647, 1);
+makeWindows(-6.821, -25.33, 6.502047, 1);
+
+
+
+	
+}
+
+/*
+	makeLight(-22.571, -15.33, 2);
+	makeLight(-22.571, 11.67, 2);
+	makeLight(-27.531, -2.039999, 1);
+	makeLight(-17.181, -2.039999, 1);
+	makeLight(-9.071001, -19.33, 1);
+	makeLight(1.928999, -19.33, 1);
+	makeLight(-9.071001, -1.33, 1);
+	makeLight(1.928999, -1.33, 1);
+	makeLight(-9.071001, 16.67, 1);
+	makeLight(1.928999, 16.67, 1);
+*/
+	ground = makeCube(1000,1,700,0,-1,0,new THREE.Color(0x2FC313));
 	makeSun();
 
 	renderer = new THREE.WebGLRenderer();

@@ -6,15 +6,23 @@ var sunSpeed = 0.01;
 var jimRaycaster;
 var jimMouse;
 var g;
+var scale = 10;
+
+var zoom = 10;
 function guiStart()
 {
 	var paramater = 
 	{
-		sunSpeed: 0.01
+		sunSpeed: 0.01,
+		zoom:1
 	};
 	var gui = new dat.GUI();
 	gui.add( paramater, 'sunSpeed', 0, 0.1 ).onChange( function () {
 		sunSpeed = paramater.sunSpeed;
+	} );
+
+	gui.add( paramater, 'zoom', 0, 50.0 ).onChange( function () {
+		zoom = paramater.zoom;
 	} );
 	gui.open();
 }
@@ -53,7 +61,7 @@ function jimDoor(posX, posY, isClockwise, isStartHos, isLeft)
 	objs.push(doorObj);
 	scene.add(door);
 	doors.push(door);
-	door.position.set(posX,0,posY);
+	door.position.set(posX*scale,0,posY*scale);
 
 	door.isOpened = false;
 	door.OnOpen = function()
@@ -140,8 +148,46 @@ function JimUpdate()
 	{
 		doors[i].update();
 	}
+
+
+	var d = camera.position.distanceTo( new THREE.Vector3( 0, 0, 0 ) );
+	console.log(d);
+
+	if(d<=2)
+	{
+		//controls.reset();
+
+		console.log("zoom from "+camera.position.x);
+		camera.position.set
+		(
+		 camera.position.x*10,
+		 camera.position.y*10,
+		 camera.position.z*10
+		);
+
+		console.log("to "+camera.position.x);
+	}else if(d>=100)
+	{
+		camera.position.set
+		(
+		 camera.position.x/10,
+		 camera.position.y/10,
+		 camera.position.z/10
+		);
+	}
+	
+	
+	
+	
 }
 
+/*
+	jimDoor(18, -21, false, true, false );
+	jimDoor(-1, -2,  true, true , false );
+	jimDoor(-1, 7,  false, true , false );
+	jimDoor(-6, 5,  false, false, false );
+	jimDoor(3, 26,  false, true, true  );
+*/
 function makeSun()
 {
 	var light = new THREE.DirectionalLight( 0xffffff );
@@ -170,12 +216,8 @@ function makeSun()
 function makeLight(posX, posY, intensity)
 {
 	//makeCube(1,1, 1, posX+1, 2, posY+1, new THREE.Color(1,1,1));
-
-
-
-
 	var spotLight = new THREE.SpotLight( 0xffffff,1 );
-	spotLight.position.set( posX, 10, posY );
+	spotLight.position.set( posX*scale, 10*scale, posY *scale);
 	spotLight.angle = Math.PI/1;
 	spotLight.penumbra = 0.05;
 	spotLight.decay = 2;
@@ -225,9 +267,9 @@ function makeGlass(sizeX, sizeY, sizeZ, posX, posY, posZ)
 			} );
 				
 	material.color = new THREE.Color(0x4951F8);
-	var geometry = new THREE.BoxGeometry(sizeX, sizeY, sizeZ);
+	var geometry = new THREE.BoxGeometry(sizeX*scale, sizeY*scale, sizeZ*scale);
 	var cube = new THREE.Mesh( geometry, material );
-	cube.position.set(posX, posY, posZ);
+	cube.position.set(posX*scale, posY*scale, posZ*scale);
 	scene.add(cube);
 	cube.name = 'glass';
 	return cube;
@@ -239,11 +281,11 @@ function makeCube(sizeX, sizeY, sizeZ, posX, posY, posZ, colorBox)
 	var material = new THREE.MeshStandardMaterial();
 	material.color = colorBox;
 
-	var geometry = new THREE.BoxGeometry(sizeX, sizeY, sizeZ);
+	var geometry = new THREE.BoxGeometry(sizeX*scale, sizeY*scale, sizeZ*scale);
 	var cube = new THREE.Mesh( geometry, material );
-	cube.position.y = posY;
-	cube.position.x = posX;
-	cube.position.z = posZ;
+	cube.position.y = posY*scale;
+	cube.position.x = posX*scale;
+	cube.position.z = posZ*scale;
 
 	cube.castShadow = true; //default is false
 	cube.receiveShadow = true; //default
