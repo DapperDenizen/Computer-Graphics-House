@@ -34,6 +34,7 @@ function startJimDoor()
 	jimRaycaster = new THREE.Raycaster();
 	jimMouse = new THREE.Vector2();
 	guiStart();
+	makeSun();
 
 }
 
@@ -151,7 +152,7 @@ function JimUpdate()
 
 
 	var d = camera.position.distanceTo( new THREE.Vector3( 0, 0, 0 ) );
-	console.log(d);
+	//console.log(d);
 
 	if(d<=2)
 	{
@@ -190,6 +191,10 @@ function JimUpdate()
 */
 function makeSun()
 {
+	var ambientLight = new THREE.AmbientLight();
+	scene.add( ambientLight );
+	ambientLight.intensity = 0.5;
+
 	var light = new THREE.DirectionalLight( 0xffffff );
 	light.position.set(0, 50, 10);
 	light.shadowCameraLeft = -50;

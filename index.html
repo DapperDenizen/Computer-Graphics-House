@@ -28,7 +28,9 @@ var params = { opacity: 0.5 };
 <script src="js/dat.gui.min.js"></script>
 
 <script src="js/inflate.min.js"></script>
-<script src="JimJs/jimDoor.js"></script>
+<script src="js/FBXLoader.min.js"></script>
+<script src="JimJs/JimDoor.js"></script>
+<script src="JimJs/JimFBX.js"></script>
 
 
 <script type="text/javascript">
@@ -67,56 +69,56 @@ function init() {
 	initobj(1);
 
 
-function initobj(s)
-{
-	scale = s;
-makeWall2(-32.37203, 12.324, 1, 19.04171);
-makeWall2(-30.09203, 21.414, 5.318408, 1);
-makeWall2(-2.482029, -25.316, 2.125031, 1.04175);
-makeWall2(6.387972, -23.246, 1, 5.138861);
-makeWall2(-27.74203, -6.126001, 16.2399, 1);
-makeWall2(-32.19503, -15.976, 1, 19.04171);
-makeWall2(-12.98203, 12.004, 1, 19.04171);
-makeWall2(-12.96203, -15.976, 1, 19.04171);
-makeWall2(-35.37903, -5.247001, 1, 2.722182);
-makeWall2(-12.89203, -33.766, 1.3625, 1.452701);
-makeWall2(6.347971, -33.766, 1.3625, 1.4527);
-makeWall2(5.627972, -25.406, 2.345203, 0.9742169);
-makeWall2(-13.39203, -6.116001, 2, 1);
-makeWall2(-27.84203, 2.193999, 16.23991, 1);
-makeWall2(-13.39203, 2.183999, 1.837685, 0.97422);
-makeWall2(-20.68203, -4.296001, 1, 2.98912);
-makeWall2(4.887972, 21.494, 4.082932, 1);
-makeWall2(-13.89203, -25.316, 7.530567, 1.04175);
-makeWall2(-30.22203, -25.316, 5.553797, 1.04175);
-makeWall2(-35.42203, 1.343998, 1, 2.657);
-makeWall2(-14.64203, 21.414, 6.24913, 1);
-makeWall2(-5.022029, 21.424, 2.719612, 1);
-makeWall2(6.387972, -1.896001, 1, 17.7933);
-makeWall2(6.387972, 19.324, 1, 5.13886);
+	function initobj(s)
+	{
+		scale = s;
+		makeWall2(-32.37203, 12.324, 1, 19.04171);
+		makeWall2(-30.09203, 21.414, 5.318408, 1);
+		makeWall2(-2.482029, -25.316, 2.125031, 1.04175);
+		makeWall2(6.387972, -23.246, 1, 5.138861);
+		makeWall2(-27.74203, -6.126001, 16.2399, 1);
+		makeWall2(-32.19503, -15.976, 1, 19.04171);
+		makeWall2(-12.98203, 12.004, 1, 19.04171);
+		makeWall2(-12.96203, -15.976, 1, 19.04171);
+		makeWall2(-35.37903, -5.247001, 1, 2.722182);
+		makeWall2(-12.89203, -33.766, 1.3625, 1.452701);
+		makeWall2(6.347971, -33.766, 1.3625, 1.4527);
+		makeWall2(5.627972, -25.406, 2.345203, 0.9742169);
+		makeWall2(-13.39203, -6.116001, 2, 1);
+		makeWall2(-27.84203, 2.193999, 16.23991, 1);
+		makeWall2(-13.39203, 2.183999, 1.837685, 0.97422);
+		makeWall2(-20.68203, -4.296001, 1, 2.98912);
+		makeWall2(4.887972, 21.494, 4.082932, 1);
+		makeWall2(-13.89203, -25.316, 7.530567, 1.04175);
+		makeWall2(-30.22203, -25.316, 5.553797, 1.04175);
+		makeWall2(-35.42203, 1.343998, 1, 2.657);
+		makeWall2(-14.64203, 21.414, 6.24913, 1);
+		makeWall2(-5.022029, 21.424, 2.719612, 1);
+		makeWall2(6.387972, -1.896001, 1, 17.7933);
+		makeWall2(6.387972, 19.324, 1, 5.13886);
 
 
-jimDoor(3.93, -25.39, false, true, false );
-jimDoor(-14.84, -6.14, true, true , false );
-jimDoor(-14.807, 2.158, false, true , false );
-jimDoor(-20.62, 1.1, false, false, false );
-jimDoor(-11.1, 21.6, false, true, true );
+		jimDoor(3.93, -25.39, false, true, false );
+		jimDoor(-14.84, -6.14, true, true , false );
+		jimDoor(-14.807, 2.158, false, true , false );
+		jimDoor(-20.62, 1.1, false, false, false );
+		jimDoor(-11.1, 21.6, false, true, true );
 
 
-makeWindows(-35.381, -1.95, 1, 3.862499);
-makeWindows(-22.591, 21.39, 9.638683, 1);
-makeWindows(-0.4209995, 21.44, 6.506104, 1);
-makeWindows(6.389, 11.9, 1, 9.83851);
-makeWindows(6.389002, -15.71, 1, 9.83851);
-makeWindows(-22.561, -25.33, 9.879647, 1);
-makeWindows(-6.821, -25.33, 6.502047, 1);
+		makeWindows(-35.381, -1.95, 1, 3.862499);
+		makeWindows(-22.591, 21.39, 9.638683, 1);
+		makeWindows(-0.4209995, 21.44, 6.506104, 1);
+		makeWindows(6.389, 11.9, 1, 9.83851);
+		makeWindows(6.389002, -15.71, 1, 9.83851);
+		makeWindows(-22.561, -25.33, 9.879647, 1);
+		makeWindows(-6.821, -25.33, 6.502047, 1);
 
 
 
-	
-}
+		
+	}
 
-/*
+
 	makeLight(-22.571, -15.33, 2);
 	makeLight(-22.571, 11.67, 2);
 	makeLight(-27.531, -2.039999, 1);
@@ -127,9 +129,157 @@ makeWindows(-6.821, -25.33, 6.502047, 1);
 	makeLight(1.928999, -1.33, 1);
 	makeLight(-9.071001, 16.67, 1);
 	makeLight(1.928999, 16.67, 1);
-*/
+
 	ground = makeCube(1000,1,700,0,-1,0,new THREE.Color(0x2FC313));
-	makeSun();
+	
+	var loader = new JimFBX(3);
+	//loader.load("Prop_Big_Clock.fbx",5,2,true);
+	//loader.load("Prop_Chair_03.fbx",3,0,true);
+
+	loader.load('Prop_Plant_03.fbx', 2.127322, -1.648503, true);
+loader.load('Prop_Oven_White.fbx', 1.904864, -3.68683, false);
+loader.load('Prop_Plant_02.fbx', 2.080868, -2.631767, true);
+loader.load('Prop_WallArt_03.fbx', 2.509675, 3.009108, false);
+loader.load('Prop_TowelSmall_Blue.fbx', -10.13027, -9.71986, false);
+loader.load('Prop_PowerPoint.fbx', -10, -9.392151, false);
+loader.load('Prop_ToiletBrush_01.fbx', -10.34615, -14.98652, true);
+loader.load('Prop_BathroomLight.fbx', -10, -11.5, false);
+loader.load('Prop_Shower.fbx', -13, -19, true);
+loader.load('Prop_TowelRail.fbx', -10, -10, false);
+loader.load('Prop_TowelBig_Red.fbx', -10.12699, -10.21241, false);
+loader.load('Prop_ToiletRoll_02.fbx', -9.966795, -13.21639, false);
+loader.load('Prop_BathMat_Blue.fbx', -12.36352, -17.28605, true);
+loader.load('Prop_RubbishBin_02.fbx', 1.551335, -1.805297, false);
+loader.load('Prop_BathFull.fbx', -10, -18.9533, true);
+loader.load('Prop_FruitBowl.fbx', -1.884497, -2.691735, true);
+loader.load('Prop_Fridge_01.fbx', 1.783467, -2.647821, false);
+loader.load('Prop_BathroomCabinet_White.fbx', -10, -11.5, false);
+loader.load('Prop_Microwave.fbx', 1.995206, -4.657777, false);
+loader.load('Prop_Cupboards_Black.fbx', 2.507439, -5.816805, false);
+loader.load('Prop_PlateDryer.fbx', 1.997792, -5.465776, true);
+loader.load('Prop_SoapDish.fbx', -10.15547, -11.01067, false);
+loader.load('Prop_WallArt_01.fbx', -2.701849, 7.492517, false);
+loader.load('Prop_RangeHood.fbx', 2.143945, -3.65246, false);
+loader.load('Prop_LightSwitch.fbx', -11.00788, -9.019835, false);
+loader.load('Prop_SoapDispencer.fbx', -10.16113, -12.15856, true);
+loader.load('Prop_BunkBed_Blue.fbx', -23.33965, 10.18312, false);
+loader.load('Prop_Plant_01.fbx', -10.24479, -14.20317, true);
+loader.load('Prop_RubbishBin_01.fbx', -10.42444, -12.65384, true);
+loader.load('Prop_Curtains_Blue.fbx', 2.5, 5, false);
+loader.load('Prop_MirrorBrown.fbx', -10, -11.5, false);
+loader.load('Prop_Toaster.fbx', 1.975957, -7.226812, true);
+loader.load('Prop_Flower_Pot_01.fbx', -14.48026, -9.645035, true);
+loader.load('Prop_Rug_01.fbx', -20.39464, 6.20962, true);
+loader.load('Prop_Cushion_01.fbx', -5.749256, 2.771435, false);
+loader.load('Prop_Lamp_06.fbx', 2.033506, 7.003629, true);
+loader.load('Prop_Fork_01.fbx', -1.635859, 5.408482, true);
+loader.load('Prop_Rug_04.fbx', 1.779482, -0.07576895, false);
+loader.load('Prop_Big_Clock.fbx', 2.022936, 1.931013, false);
+loader.load('Prop_Couch_02.fbx', -5.666834, 3.943568, false);
+loader.load('Prop_Computer_Screen.fbx', -10.30266, -6.610204, true);
+loader.load('Prop_Small_Table_01.fbx', -11.74433, 4.107633, false);
+loader.load('Prop_Sound_System.fbx', -11.59906, 4.806907, false);
+loader.load('Prop_WallArt_02.fbx', -10, -14.23882, false);
+loader.load('Prop_Insect_Frame_02.fbx', -1.890462, -7.42351, true);
+loader.load('Prop_Books_02.fbx', -6.397171, -7.106066, true);
+loader.load('Prop_Draw_02.fbx', -19.97573, 1.912124, true);
+loader.load('Prop_Computer_Case.fbx', -9.472857, -6.634608, true);
+loader.load('Prop_Computer_Keyboard.fbx', -10.31879, -5.99375, true);
+loader.load('Prop_Turkey_02.fbx', 0, 4.718677, true);
+loader.load('Prop_Food_Bowl_03.fbx', 0.9204703, 4.799053, true);
+loader.load('Prop_Desk_01.fbx', -10.32509, -6.515239, true);
+loader.load('Prop_Computer_Mouse.fbx', -11.20488, -6.082795, true);
+loader.load('Prop_Small_Table_03.fbx', -9.169574, 4.081675, false);
+loader.load('Prop_Joystick.fbx', -11.51054, 5.298839, false);
+loader.load('Prop_Tv_06.fbx', -11.81146, 3.896446, false);
+loader.load('Prop_Plate_01.fbx', -1.065977, 4.039701, true);
+loader.load('Prop_Wardrobe_02.fbx', -17.92156, 2.049397, true);
+loader.load('Prop_Bar_Stool.fbx', -3, -3.5, false);
+loader.load('Prop_Cupboard_07.fbx', -7.314021, -6.956719, true);
+loader.load('Prop_Fireplace_01.fbx', -9.142702, 7.02213, false);
+loader.load('Prop_Flower_Pot_01.fbx', -10.94278, 7.071479, true);
+loader.load('Prop_Food_Bowl_01.fbx', -0.9951718, 4.779202, true);
+loader.load('Prop_Food_Bowl_02.fbx', -0.2915511, 5.427369, true);
+loader.load('Prop_Game_01.fbx', -9.335018, 4.155926, false);
+loader.load('Prop_Game_02.fbx', -11.40372, 4.849216, true);
+loader.load('Prop_Chair_01.fbx', -6.158047, -5.372724, true);
+loader.load('Prop_Game_Console.fbx', -11.97068, 5.164785, false);
+loader.load('Prop_Game_Pad.fbx', -9.203835, 4.855333, false);
+loader.load('Prop_Lamp_01.fbx', -8.242623, -7.163229, true);
+loader.load('Prop_Rug_01.fbx', -9.885799, -4.098238, true);
+loader.load('Prop_Small_Table_08.fbx', -6.208204, -3.766456, true);
+loader.load('Prop_Vcr.fbx', -11.62586, 3.436481, false);
+loader.load('Prop_Table_03.fbx', 0, 4.705597, true);
+loader.load('Prop_Washing_Machine.fbx', -14.31312, -16.19578, false);
+loader.load('Prop_Cushion_02.fbx', -7.499632, 0.7624891, false);
+loader.load('Prop_Chair_06.fbx', -1.021627, 3.317861, true);
+loader.load('Prop_Rug_03.fbx', -12.70645, -12.13779, false);
+loader.load('Prop_Chest_01.fbx', -16.65753, 9.821096, false);
+loader.load('Prop_Books_02.fbx', -6.32972, -7.106066, true);
+loader.load('Prop_Books_01.fbx', -5.232486, -7.152863, true);
+loader.load('Prop_Shelf_08.fbx', -5.683392, -7.064165, true);
+loader.load('Prop_Toilet_01.fbx', -10.00939, -14.21322, false);
+loader.load('Prop_KitchenSink_Black.fbx', 2.5, -4.243392, false);
+loader.load('Prop_Cupboard_07.fbx', -25.59776, 4.640057, false);
+loader.load('Prop_Books_02.fbx', -16.44266, 7.857556, true);
+loader.load('Prop_Bunny_Ear.fbx', -16.52476, 6.368766, false);
+loader.load('Prop_Knife_01.fbx', 1.701822, 5.35291, true);
+loader.load('Prop_Lamp_06.fbx', -16.38779, 11.01935, true);
+loader.load('Prop_Plant.fbx', -16.54193, 8.823506, true);
+loader.load('Prop_Plant_03.fbx', -16.42125, 8.274039, true);
+loader.load('Prop_Fork_01.fbx', -1.635859, 4.045424, false);
+loader.load('Prop_WallArt_01.fbx', -15.99306, 7.788473, false);
+loader.load('Prop_Small_Table_04.fbx', -16.60876, 6.393482, false);
+loader.load('Prop_Knife_01.fbx', -1.482408, 4.030272, false);
+loader.load('Prop_SingleBed_Pink.fbx', -23.47029, 2.904522, false);
+loader.load('Prop_Game_01.fbx', -17.51059, 5.616817, false);
+loader.load('Prop_Desk_Chair.fbx', -10.62425, -4.674099, false);
+loader.load('Prop_Candle_02.fbx', -8.235731, 7.23559, true);
+loader.load('Prop_Big_Chair_01.fbx', -7.475069, 0.7880372, false);
+loader.load('Prop_Insect_Frame_03.fbx', -12.44373, -2.665405, false);
+loader.load('Prop_Bar_Bench.fbx', -1.913542, -4.832489, false);
+loader.load('Prop_Game_02.fbx', -18.94837, 5.200829, false);
+loader.load('Prop_Dryer.fbx', -14.30429, -14.99693, false);
+loader.load('Prop_Game_Pad.fbx', -18.33994, 6.161089, false);
+loader.load('Prop_Books_01.fbx', -6.152502, -7.152863, true);
+loader.load('Prop_Candle_02.fbx', -10.09636, 7.23559, true);
+loader.load('Prop_Knife_01.fbx', 1.701822, 4.030272, false);
+loader.load('Prop_Game_Console.fbx', -18.31617, 6.952476, false);
+loader.load('Prop_Fork_01.fbx', 1.548371, 5.368062, true);
+loader.load('Prop_Game_Pad.fbx', -19.86436, 6.797812, false);
+loader.load('Prop_Desk_Lamp.fbx', -8.966909, -6.870734, true);
+loader.load('Prop_Knife_01.fbx', -1.482408, 5.39333, true);
+loader.load('Prop_Rug_02.fbx', -1.923601, 0.3367943, true);
+loader.load('Prop_Lamp_04.fbx', -25.64426, 4.612806, true);
+loader.load('Prop_Shelf_011.fbx', 2.14644, -1.680934, false);
+loader.load('Prop_Draw_02.fbx', -16.5151, 8.272025, false);
+loader.load('Prop_Bonzai.fbx', -1.912889, -6.968761, true);
+loader.load('Prop_Tv_03.fbx', -16.54973, 6.367859, false);
+loader.load('Prop_shelf_01.fbx', -14.7027, -13.89076, false);
+loader.load('Prop_Mirror.fbx', -19.9766, 1.487273, true);
+loader.load('Prop_Shelf_013.fbx', -8.280475, -7.146641, true);
+loader.load('Prop_Curtains_Blue.fbx', 0, 7.5, false);
+loader.load('Prop_Speaker_03.fbx', -12.01562, 6.040503, false);
+loader.load('Prop_Shelf_011.fbx', -14.68957, -13.87825, false);
+loader.load('Prop_Chair_06.fbx', -0.9845579, 6.32329, false);
+loader.load('Prop_Plate_01.fbx', 1.153322, 4.01877, false);
+loader.load('Prop_Plate_01.fbx', 1.153322, 5.397444, false);
+loader.load('Prop_Plate_01.fbx', -1.065977, 5.418375, true);
+loader.load('Prop_Books_02.fbx', -4.979178, -7.106066, true);
+loader.load('Prop_Speaker_03.fbx', -12.00355, 2.271261, false);
+loader.load('Prop_Fork_01.fbx', 1.548371, 4.045424, false);
+loader.load('Prop_Books_02.fbx', -8.341614, -7.106066, true);
+loader.load('Prop_Books_02.fbx', -11.45442, -7.065766, true);
+loader.load('Prop_Bar_Stool.fbx', -3, -6.5, false);
+loader.load('Prop_Bar_Stool.fbx', -3, -5, false);
+loader.load('Prop_Chair_01.fbx', -4.789401, -4.594136, false);
+loader.load('Prop_Chair_01.fbx', -5.242697, -2.404968, false);
+loader.load('Prop_Chair_01.fbx', -7.502618, -2.980383, false);
+loader.load('Prop_Plant_03.fbx', -19.56999, 1.859224, true);
+loader.load('Prop_Chair_06.fbx', 0.7076536, 3.317861, true);
+loader.load('Prop_Chair_06.fbx', 0.9185117, 6.308453, false);
+	loader.onLoad();
+
 
 	renderer = new THREE.WebGLRenderer();
 	//renderer = new THREE.CanvasRenderer();
@@ -143,21 +293,6 @@ makeWindows(-6.821, -25.33, 6.502047, 1);
 	stats = new Stats();
 	container.appendChild( stats.dom );
 
-
-
-
-spotLight = new THREE.SpotLight( 0xffffff, 1 );
-				spotLight.position.set( 15, 40, 35 );
-				spotLight.angle = Math.PI / 4;
-				spotLight.penumbra = 0.05;
-				spotLight.decay = 2;
-				spotLight.distance = 200;
-				spotLight.castShadow = true;
-				spotLight.shadow.mapSize.width = 1024;
-				spotLight.shadow.mapSize.height = 1024;
-				spotLight.shadow.camera.near = 10;
-				spotLight.shadow.camera.far = 200;
-				//scene.add( spotLight );
 }
 
 
