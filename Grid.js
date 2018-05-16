@@ -1,4 +1,4 @@
-class GridStuff{
+class Grid{
 // this is the grid creation class, it contains a grid made of nodes (found at the bottom).  
 constructor(xGridWorldSize,yGridWorldSize,posX,posY,posZ){
 //area the grid will take up (world height and world width)
@@ -7,7 +7,7 @@ this.yGridWorldSize = yGridWorldSize;
 //world position
 this.pos = [posX,posY,posZ];
 //the grid itself
-this.grid = new Array();
+this.grid = [[]];
 //each squares mesurements
 this.nodeRadius = 1;
 this.nodeDiameter = this.nodeRadius*2;
@@ -29,13 +29,13 @@ for(x =0; x< this.yGridSize; x++ ){
         for(y =0; y< this.xGridSize; y++ ){
             //world point is the world point the node will be placed on
             var worldPoint = [worldBottomLeft[0]+ (x*this.nodeDiameter +this.nodeRadius) ,worldBottomLeft[1]+ (y*this.nodeDiameter +this.nodeRadius)];
-            this.grid.push(new Node(worldPoint[0],worldPoint[1],[x,y])); 
+            this.grid[x].push(new Node(worldPoint[0],worldPoint[1])); 
         }
-
+        this.grid.push(new Array());
     }
 
     //use the below command for debugging the grid, it prints out the entire array!
-    //console.log(this.grid);
+   // console.log(this.grid);
 }
 
 nodeFromWorldPoint(point){
@@ -47,7 +47,7 @@ xPercent = this.clampNumb(xPercent,0,1);
 yPercent = this.clampNumb(yPercent,0,1);
 var tempX = Math.round((this.yGridSize-1) *xPercent);
 var tempY = Math.round((this.xGridSize-1) *yPercent);
- return this.getNode(tempX,tempY);
+ return this.grid[tempX][tempY];
 }
 //this is used for testing!
 giveMeSquares(){
@@ -61,27 +61,12 @@ clampNumb(numb,min, max) {
     return Math.min(Math.max(numb, min), max);
   };
 
-getNode(positionX, positionY){
-    //search function (this can be much nicer)
-    //looks for the grid node in the corresponding co-ordinates
-    var temp = 0;
-    var lookingFor = new Array ( positionX, positionY);
-    for(temp = 0; temp < this.grid.length; temp++){
-        if(this.grid[temp].gridPos[0] == lookingFor[0] && this.grid[temp].gridPos[1] == lookingFor[1] ){
-            return this.grid[temp];
-        }
-    }
-    console.log( "Error- Cannot find Node | problem in getNode()");
-
-}
-
 }
 //Node class, these are the squares in the grid
 class Node{
-    constructor(xPos, yPos,gridPos){
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.gridPos = gridPos;
+    constructor(xPos, yPos){
+        this.xPos = xPos; //world X pos
+        this.yPos = yPos; // world Z pos
         this.usable = this.checkUsable();
         this.occupied = false;
 
@@ -92,9 +77,9 @@ class Node{
         return true;
     }
 
-    checkOccupied(){
+    isOccupied(occupied){
         //check is furniture is already inside it
-        return false;
+       this.occupied = occupied;
     }
 
     //public returns, to be referenced from outside the Node
