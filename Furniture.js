@@ -19,8 +19,13 @@ class Furniture {
     activateNodes(newNodes) {
         //this is to tell the nodes we are on to be occupied
         //console.log(newNodes);
-
-
+        for(var i = 0; i < this.nodes.length; i ++){
+            this.nodes[i].isOccupied(false);
+        }
+        this.nodes = newNodes;
+           for(var i = 0; i < this.nodes.length; i ++){
+            this.nodes[i].isOccupied(true);
+        }
     }
 
     checkSittingOn() {
@@ -37,6 +42,7 @@ class Furniture {
                     newNodes.push(nodeMap[x][y]);
                     }else if(nodeMap.occupied == true){
                         console.log("ERROR- two objects collided");
+                        //move back to previous position or figure out what we're gunna do!
                     }
                 }
 

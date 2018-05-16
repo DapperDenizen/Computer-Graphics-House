@@ -94,16 +94,9 @@ class Node{
         this.xPos = xPos; //world X pos
         this.yPos = yPos; // world Z pos
         this.gridPos = gridPos // [x,y] grid positions
-        this.usable = this.checkUsable();
         this.occupied = false;
 
     }
-
-    checkUsable(){
-        //check if usable
-        return true;
-    }
-
     isOccupied(occupied){
         //check is furniture is already inside it
        this.occupied = occupied;
