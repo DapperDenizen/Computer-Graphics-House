@@ -135,6 +135,9 @@ function onClick(event)
 		if (intersects[0].object.name ==  'doorObj') 
 		{
 			intersects[0].object.parent.OnOpen();
+		}else if (intersects[0].object.name ==  'TV') 
+		{
+			intersects[0].object.onClick();
 		}
 	}
 }
@@ -301,3 +304,9 @@ function makeCube(sizeX, sizeY, sizeZ, posX, posY, posZ, colorBox)
 	cube.name = "cube";
 	return cube;
 }
+
+
+/*
+
+
+*/
