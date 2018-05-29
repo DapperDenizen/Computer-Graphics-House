@@ -29,7 +29,7 @@ for(x =0; x< this.yGridSize; x++ ){
         for(y =0; y< this.xGridSize; y++ ){
             //world point is the world point the node will be placed on
             var worldPoint = [worldBottomLeft[0]+ (x*this.nodeDiameter +this.nodeRadius) ,worldBottomLeft[1]+ (y*this.nodeDiameter +this.nodeRadius)];
-            this.grid[x].push(new Node(worldPoint[0],worldPoint[1])); 
+            this.grid[x].push(new Node(worldPoint[0],worldPoint[1],[x,y])); 
         }
         this.grid.push(new Array());
     }
@@ -54,6 +54,32 @@ giveMeSquares(){
     return this.grid;
 }
 
+getNeighbours(node){
+    //gets the neighbours in this pattern:
+    //  xxxx
+    //  xoxx    <- 'o' is the node and 'x' is the neighbours
+    //  xxxx
+    //  xxxx
+var neighbourNodes;
+neighbourNodes = [[]];//neighbourNodes.push(new Array()); neighbourNodes[0] = [];
+//var temp =
+for(var x = -1; x <= 2; x++){
+    for(var y = -1; y <= 2; y++){
+        //if(x == 0 && y == 0){continue;}  //removal of this means we get the input node back which is what i want for now
+        var checkX = node.gridPos[0] + x;
+        var checkY = node.gridPos[1] + y;
+
+        if(checkX >= 0 && checkX < this.xGridSize && checkY >= 0 && checkY < this.yGridSize){
+            var temp = x+1;
+           neighbourNodes[temp].push(this.grid[checkX][checkY]);
+        }
+    }    
+
+    neighbourNodes.push(new Array());
+    //neighbourNodes[temp] = [];
+}
+return neighbourNodes;
+}
 
 //utility functions (mostly aquired from stack overflow)
 clampNumb(numb,min, max) {
@@ -64,19 +90,13 @@ clampNumb(numb,min, max) {
 }
 //Node class, these are the squares in the grid
 class Node{
-    constructor(xPos, yPos){
+    constructor(xPos, yPos, gridPos){
         this.xPos = xPos; //world X pos
         this.yPos = yPos; // world Z pos
-        this.usable = this.checkUsable();
+        this.gridPos = gridPos // [x,y] grid positions
         this.occupied = false;
 
     }
-
-    checkUsable(){
-        //check if usable
-        return true;
-    }
-
     isOccupied(occupied){
         //check is furniture is already inside it
        this.occupied = occupied;

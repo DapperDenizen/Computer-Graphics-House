@@ -19,6 +19,7 @@
 	<script src="three.js"></script>
 	<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src="Grid.js"></script>
+	<script src="Furniture.js"></script>
 
 	<script>
 		//grid
@@ -78,6 +79,18 @@
 		thing1.position.set(0, thingY, 0);
 		scene.add(thing1);
 		//
+
+
+		//FURNITURE TESTS
+		var box1Shape = [
+			[0,0,0,0],
+			[0,1,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+		];
+		var box1 = new Furniture(thing1,box1Shape,grid,thing1.position);
+		//
+
 
 		//---------------------------------------------------------------------------------Lights
 		//Directional light
