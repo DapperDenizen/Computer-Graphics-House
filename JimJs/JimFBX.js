@@ -3,6 +3,7 @@ function JimFBX(scale)
 {
 	
 	this.jimObjs = [];
+	this.calebObjs = [];
 	this.loader = new THREE.FBXLoader();
 	this.scale =scale;
 	var path = "SimpleInteriorsHouses/Textures/SimpleInteriorsHouses.png";
@@ -13,7 +14,29 @@ function JimFBX(scale)
 	{
 		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation));
 	}
-
+	
+	this.spawn = function(name, posX, posY, posZ, rotation)
+	{
+		this.calebObjs.push(new JimObj(name, posX, posY, posZ, rotation));
+	}
+	
+	this.onClick = function()
+	{
+		var n = this.calebObjs;
+		var l = this.loader;
+		var s = this.scale;
+		this.textureLoader.load(path, function (texture) 
+		{
+		    for (var i = n.length - 1; i >= 0; i--) 				
+				{
+				console.log('SimpleInteriorsHouses/Models/'+n[i].name);
+				l.load('SimpleInteriorsHouses/Models/'+n[i].name, initObj(n[i], scale, texture));
+				break;
+				}
+			
+	    });
+	}
+	
 	this.onLoad = function()
 	{
 		var n = this.jimObjs;

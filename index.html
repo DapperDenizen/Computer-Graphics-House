@@ -32,6 +32,7 @@ var params = { opacity: 0.5 };
 <script src="JimJs/JimFBX.js"></script>
 <script src="JimJs/JimFPS.js"></script>
 
+<script src="js/GuiSpawner.js"></script>
 
 <script type="text/javascript">
 init();
@@ -59,6 +60,7 @@ function init() {
 	//scene.background = new THREE.Color( 0xf0f0f0 );
 
 	startJimDoor();
+	guiSpawner();
 
 	gridHelper = new THREE.GridHelper( 100, 22 );
 	//scene.add( gridHelper );
@@ -110,9 +112,6 @@ function init() {
 		makeWindows(9.99, -15.71, 1, 9.84);
 		makeWindows(-18.96, -25.33, 9.88, 1);
 		makeWindows(-3.22, -25.33, 6.5, 1);
-
-
-
 		
 	}
 
@@ -259,7 +258,6 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 
 	loader.onLoad();
 
-
 	renderer = new THREE.WebGLRenderer();
 	//renderer = new THREE.CanvasRenderer();
 
@@ -273,7 +271,6 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 	container.appendChild( stats.dom );
 
 }
-
 
 
 function animate() {
