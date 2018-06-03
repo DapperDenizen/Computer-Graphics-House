@@ -7,6 +7,7 @@ var jimRaycaster;
 var jimMouse;
 var g;
 var scale = 10;
+var isUsingTexture_JimDoor = false;
 
 var zoom = 10;
 function guiStart()
@@ -259,13 +260,23 @@ function makeWindows(posX, posY, sizeX, sizeY)
 
 function makeWall2(posX, posY, sizeX, sizeY)
 {
-	return makeCube(sizeX, 10, sizeY, posX,5,posY, new THREE.Color(1,1,1));
+	var wall = makeCube(sizeX, 10, sizeY, posX,5,posY, new THREE.Color(1,1,1));
+	console.log(isUsingTexture_JimDoor);
+	if(isUsingTexture_JimDoor)
+	{
+		onReplaceTexture(wall, "Textures/Plaster Wall/eisklotz_plaster-01-l-color.jpg", 1, 1, "Textures/Plaster Wall/eisklotz_plaster-01-l-normal.jpg");
+	}
+	return wall;
 }
 
 function makeWall(posAx, posAy, posBx, posBy)
 {
-
-	return makeCube((posBx - posAx),20,(posBy - posAy),posAx,10,posAy, new THREE.Color(1,1,1));
+	var wall = makeCube((posBx - posAx),20,(posBy - posAy),posAx,10,posAy, new THREE.Color(1,1,1));
+	if(isUsingTexture_JimDoor)
+	{
+		onReplaceTexture(wall, "Textures/Plaster Wall/eisklotz_plaster-01-l-color.jpg", 1, 1, "Textures/Plaster Wall/eisklotz_plaster-01-l-normal.jpg");
+	}
+	return wall;
 }
 
 
