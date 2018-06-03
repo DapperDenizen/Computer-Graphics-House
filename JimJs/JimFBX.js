@@ -105,6 +105,8 @@ function onReplaceTexture(mesh, path)
 		    if (child instanceof THREE.Mesh) 
 		    {
 		        // apply texture
+		        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+				texture.repeat.set( 3, 3 );
 		        child.material.map = texture;
 		        child.material.needsUpdate = true;
 		    }
