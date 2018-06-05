@@ -24,11 +24,14 @@
 	<script>
 		//grid
 		var grid = new Grid(14,14,0,-5,0);
+		var debugGrid;
 		//variables 
+		var heldItem;
 		var itemHeld  = false;
 		var movingX = 0;
 		var movingZ = 0;
 		var thingY = 0;
+		var furnitures = [];
 		//------------------------------------------------------------camera, scene, renderer
 		//renderer
 		var renderer = new THREE.WebGLRenderer();
@@ -77,8 +80,42 @@
 		var thing1 = new THREE.Mesh(thingGeometry, thingMaterial);
 		thingY = -5 + 2 / 2;
 		thing1.position.set(0, thingY, 0);
-		scene.add(thing1);
+		//scene.add(thing1);
 		//
+
+		//thing 2
+		//geometry
+		var thing2Geometry = new THREE.BoxBufferGeometry(2, 2, 2);
+		//material
+		var thing2Material = new THREE.MeshPhongMaterial({
+			color: 'sandybrown'
+		});
+		//thing2Material.name = 'Mat';
+		//mesh1
+		var thing2 = new THREE.Mesh(thing2Geometry, thing2Material);
+		//thing2.name = 'test';
+		thingY = -5 + 2 / 2;
+		thing2.position.set(3, thingY, 3);
+		//scene.add(thing2);
+		//
+		
+		function FurnitureInit(furnitureAnchor,shape,gridRef,position){
+		var furniture = new THREE.Group();
+
+		var furnitureRef = new Furniture(furnitureAnchor,shape,gridRef,position);
+		furnitureAnchor.name = "Furniture";
+			furnitures.push(furniture);
+		furniture.add(furnitureAnchor);
+		scene.add(furniture);
+
+		furniture.RotateShape = function(){
+		furnitureRef.RotateShape();
+		}
+		furniture.CheckSittingOn = function(){
+			console.log("CALLED");
+		furnitureRef.CheckSittingOn()
+		}
+		}
 
 
 		//FURNITURE TESTS
@@ -88,7 +125,8 @@
 			[0,0,0,0],
 			[0,0,0,0],
 		];
-		var box1 = new Furniture(thing1,box1Shape,grid,thing1.position);
+		FurnitureInit(thing1,box1Shape,grid,thing1.position);
+		FurnitureInit(thing2,box1Shape,grid,thing2.position);
 		//
 
 
@@ -112,31 +150,44 @@
 		}
 
 		function whatsTheGridLookLike(){
+			if(debugGrid == null){
+				debugGrid = grid.giveMeSquares();
+			}
 			//geometry--- change x and z sizes to correctly view grid
-			var debugGeo = new THREE.BoxBufferGeometry(2, 0.5, 2);
+			var debugGeo = new THREE.BoxBufferGeometry(1, 5, 1);
 			//material
 			var debugMaterial = new THREE.MeshBasicMaterial({
-			color: 0x000000, wireframe: true
+			color: 0x330000
 		});
-			var tempgrid = grid.giveMeSquares();
+			var tempgrid = debugGrid;
 			for( i =0; i < tempgrid.length; i++){
 				var debugNode = new THREE.Mesh(debugGeo,debugMaterial);
+				if(tempgrid[i].isOccupied()){
+					debugNode.material.color.setHex( 0xF1CBFF );
+				}
 				debugNode.position.set(tempgrid[i].xPos,-5,tempgrid[i].yPos); 
 				scene.add(debugNode);
 			}
 		}
+
+
 		function onClick(event) {
 				//raycast
 				raycaster.setFromCamera(mouse, camera);
 			// calculate objects intersecting the picking ray
-			var intersects = raycaster.intersectObjects(scene.children);
+			var intersects = raycaster.intersectObjects(furnitures,true);
 			//this checks if the array has hit thing1
 			if (intersects.length > 0) {
-				if (intersects[0].object == thing1) {
+				//console.log(intersects[0].object.name);
+				if (intersects[0].object.name == "Furniture") {
 					//itemHeld means thing1 will travel with the mouse on the plane
 					if(itemHeld){
+						debugGrid = null;
 						itemHeld = false;
+						heldItem = null;
+						intersects[0].object.parent.CheckSittingOn();
 					}else{
+						heldItem = intersects[0].object
 						itemHeld = true;
 					}
 					
@@ -152,7 +203,7 @@
 		animate();
 
 		function animate() {
-
+			scene.get
 			if(itemHeld){
 				//raycast onto the floor
 				raycaster.setFromCamera(mouse, camera);
@@ -162,11 +213,11 @@
 				movingX = tempNode.xPos;
 				movingZ = tempNode.yPos;
 				}
-				thing1.position.set(movingX, thingY, movingZ);
+				heldItem.position.set(movingX, thingY, movingZ);
 			}
 
 			//enable this to view the grid
-			//whatsTheGridLookLike();
+			whatsTheGridLookLike();
 
 			requestAnimationFrame(animate);
 			renderer.render(scene, camera);

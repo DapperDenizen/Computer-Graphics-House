@@ -51,7 +51,13 @@ var tempY = Math.round((this.xGridSize-1) *yPercent);
 }
 //this is used for testing!
 giveMeSquares(){
-    return this.grid;
+var returnGrid = []
+for(var x =0; x< this.yGridSize; x++ ){
+    for(var y =0; y< this.xGridSize; y++ ){
+     returnGrid.push(this.grid[x][y]);
+    }
+}
+    return returnGrid;
 }
 
 getNeighbours(node){
@@ -94,14 +100,19 @@ class Node{
         this.xPos = xPos; //world X pos
         this.yPos = yPos; // world Z pos
         this.gridPos = gridPos // [x,y] grid positions
-        this.occupied = false;
+        this.occupied =false;
+        console.log(this.occupied);
 
     }
-    isOccupied(occupied){
+    isOccupied(){
+        //check is furniture is already inside it
+       return this.occupied;
+    }
+
+    Occupy(occupied){
         //check is furniture is already inside it
        this.occupied = occupied;
     }
-
     //public returns, to be referenced from outside the Node
     getGridPos(){
         return [this.gridPos];
