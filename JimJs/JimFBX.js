@@ -1,7 +1,9 @@
 
 function JimFBX(scale)
 {
-	
+	// grid  variables
+	this.furnitures = [];
+	//
 	this.jimObjs = [];
 	this.loader = new THREE.FBXLoader();
 	this.scale =scale;
@@ -9,9 +11,9 @@ function JimFBX(scale)
 	this.textureLoader = new THREE.TextureLoader();
 	this.textureLoader.setCrossOrigin("anonymous");
 
-	this.load = function(name, posX, posY, posZ, rotation)
+	this.load = function(name, posX, posY, posZ, rotation, shape,gridRef)
 	{
-		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation));
+		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation,shape,gridRef));
 	}
 
 	this.onLoad = function()
@@ -40,7 +42,21 @@ function JimFBX(scale)
 			geo.rotateY((obj.rotation/180) *Math.PI);
 			//console.log(i+"A");
 			geo.position.set(obj.posX * scale, obj.posY * scale, obj.posZ * scale);
-			scene.add(geo);
+			//
+			var furniture = new THREE.Group();
+			var furnitureRef = new Furniture(geo,obj.shape,obj.gridRef,new Three.Vector3(obj.posX,obj.posY,obj.posZ));
+			furnitures.push(furniture);
+			furniture.add(geo);
+			furniture.add(furnitureRef);
+
+			furniture.RotateShape = function(){
+				furnitureRef.RotateShape();
+				}
+				furniture.CheckSittingOn = function(){
+				return furnitureRef.CheckSittingOn();
+				}
+			
+			scene.add(furniture);
 			geo.traverse(function (child) 
 		    {
 			    if (child instanceof THREE.Mesh) 
@@ -60,13 +76,16 @@ function JimFBX(scale)
 }
 
 
-function JimObj(name, posX, posY, posZ, rotation) 
+function JimObj(name, posX, posY, posZ, rotation,shape,gridRef) 
 {
 	this.name=name;
 	this.posX=posX;
 	this.posY=posY;
 	this.posZ=posZ;
 	this.rotation=rotation;
+	//
+	this.shape = shape;
+	this.gridRef = gridRef;
 }
 
 
