@@ -7,6 +7,7 @@ var jimRaycaster;
 var jimMouse;
 var g;
 var scale = 10;
+var isUsingTexture_JimDoor = false;
 
 var zoom = 10;
 function guiStart()
@@ -30,9 +31,10 @@ function guiStart()
 
 function startJimDoor()
 {
-	//raycast
+
 	jimRaycaster = new THREE.Raycaster();
 	jimMouse = new THREE.Vector2();
+
 	guiStart();
 	makeSun();
 
@@ -68,8 +70,6 @@ function jimDoor(posX, posY, isClockwise, isStartHos, isLeft)
 	door.OnOpen = function()
 	{
 		door.isMoving = true;
-		console.log(this.isClockwise);	
-
 	}
 
 	door.update = function () 
@@ -88,7 +88,6 @@ function jimDoor(posX, posY, isClockwise, isStartHos, isLeft)
 			var euler = new THREE.Euler();
 			euler.setFromQuaternion(this.quaternion);
 			var degree = euler.y/Math.PI * 180;
-			console.log(way+" "+degree);	
 			if(isClockwise)
 			{
 				if((degree >-1 && way>0) || (degree <-88 && way<0))
@@ -135,9 +134,15 @@ function onClick(event)
 		if (intersects[0].object.name ==  'doorObj') 
 		{
 			intersects[0].object.parent.OnOpen();
-		}else if (intersects[0].object.name ==  'TV') 
+		}
+		else if (intersects[0].object.name ==  'TV') 
 		{
 			intersects[0].object.onClick();
+		}
+		else
+		{
+			outlinePass.selectedObjects = intersects[0].object;
+			//intersects[0].object.material.color = new THREE.Color(0,0,0);
 		}
 	}
 }
@@ -154,7 +159,7 @@ function JimUpdate()
 	}
 
 
-	var d = camera.position.distanceTo( new THREE.Vector3( 0, 0, 0 ) );
+	var d = 3;//camera.position.distanceTo( new THREE.Vector3( 0, 0, 0 ) );
 	//console.log(d);
 
 	if(d<=2)
@@ -255,13 +260,23 @@ function makeWindows(posX, posY, sizeX, sizeY)
 
 function makeWall2(posX, posY, sizeX, sizeY)
 {
-	return makeCube(sizeX, 10, sizeY, posX,5,posY, new THREE.Color(1,1,1));
+	var wall = makeCube(sizeX, 10, sizeY, posX,5,posY, new THREE.Color(1,1,1));
+	console.log(isUsingTexture_JimDoor);
+	if(isUsingTexture_JimDoor)
+	{
+		onReplaceTexture(wall, "Textures/Plaster Wall/eisklotz_plaster-01-l-color.jpg", 1, 1, "Textures/Plaster Wall/eisklotz_plaster-01-l-normal.jpg");
+	}
+	return wall;
 }
 
 function makeWall(posAx, posAy, posBx, posBy)
 {
-
-	return makeCube((posBx - posAx),20,(posBy - posAy),posAx,10,posAy, new THREE.Color(1,1,1));
+	var wall = makeCube((posBx - posAx),20,(posBy - posAy),posAx,10,posAy, new THREE.Color(1,1,1));
+	if(isUsingTexture_JimDoor)
+	{
+		onReplaceTexture(wall, "Textures/Plaster Wall/eisklotz_plaster-01-l-color.jpg", 1, 1, "Textures/Plaster Wall/eisklotz_plaster-01-l-normal.jpg");
+	}
+	return wall;
 }
 
 

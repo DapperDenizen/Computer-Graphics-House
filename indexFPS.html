@@ -5,6 +5,10 @@
 </head>
 <body>
 
+
+
+
+
 <script type="text/javascript">
 
 var container, stats;
@@ -26,8 +30,10 @@ var params = { opacity: 0.5 };
 <script src="js/OrbitControls.js"></script>
 <script src="js/dat.gui.min.js"></script>
 <script src="js/inflate.min.js"></script>
+<script src="js/PointerLockControls.js"></script>
 
 <!--outline-->
+
 <script src="js/Detector.js"></script>
 <script src="js/CopyShader.js"></script>
 <script src="js/FXAAShader.js"></script>
@@ -36,18 +42,14 @@ var params = { opacity: 0.5 };
 <script src="js/ShaderPass.js"></script>
 <script src="js/OutlinePass.js"></script>
 
-
 <script src="JimJs/JimDoor.js"></script>
 <script src="JimJs/JimFBX.js"></script>
-<script src="JimJs/customOutline.js"></script>
+<script src="JimJs/customFPS2.js"></script>
 
-
-<script src="js/GuiSpawner.js"></script>
 
 <script type="text/javascript">
 init();
 animate();
-
 
 function init() 
 {
@@ -58,13 +60,14 @@ function init()
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-	camera.position.set(0,10,0);
+	camera.position.set(0,0.1,0);
 	camera.rotateX(-Math.PI/2);
-	controls = new THREE.OrbitControls( camera );
 
+	initFPS2(2, 100);
 
-	startJimDoor();
-	guiSpawner();
+	controls = new THREE.PointerLockControls( camera );
+	scene.add( controls.getObject() );
+	controls.enabled = true;
 
 	gridHelper = new THREE.GridHelper( 100, 22 );
 	//scene.add( gridHelper );
@@ -116,6 +119,9 @@ function init()
 		makeWindows(9.99, -15.71, 1, 9.84);
 		makeWindows(-18.96, -25.33, 9.88, 1);
 		makeWindows(-3.22, -25.33, 6.5, 1);
+
+
+
 		
 	}
 
@@ -142,7 +148,7 @@ function init()
 	var bed2 = makeCube(19,0.7,19,-19,-0.5,-15,new THREE.Color(0x00ff00));
 
 	var toilet = makeCube(15,0.7,9,-24.5,-0.5,-2,new THREE.Color(0x0000ff));
-	onReplaceTexture(toilet, "Textures/Tile Floor/floor_tiles_04-l-color.jpg", 5, 3, "Textures/Tile Floor/floor_tiles_04-l-normal.jpg");
+
 
 	var ground3 = makeCube(0.1,2.7,4.03,-7.05,4.1,-12.77,new THREE.Color(0xffffff));
 
@@ -271,6 +277,7 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 
 	loader.onLoad();
 
+
 	renderer = new THREE.WebGLRenderer();
 	//renderer = new THREE.CanvasRenderer();
 
@@ -282,18 +289,13 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 
 	stats = new Stats();
 	container.appendChild( stats.dom );
-	initOutline();
-
+startJimDoor();
 }
 
 
-<<<<<<< HEAD
-function animate() {
-=======
 
 function animate() 
 {
->>>>>>> master
 	stats.update();
 	render();
 	requestAnimationFrame( animate );
@@ -302,9 +304,9 @@ function animate()
 
 function render() 
 {
+	updateFPS();
 	JimUpdate();
-	composer.render();
-	//renderer.render( scene, camera );
+	renderer.render( scene, camera );
 
 }
 

@@ -114,8 +114,11 @@ function JimLoad()
 
 
 
-function onReplaceTexture(mesh, path) 
+function onReplaceTexture(mesh, path, x, y, normalMap) 
 {
+	x = typeof x !== 'undefined' ?  x : 1;
+	y = typeof y !== 'undefined' ?  y : 1;
+
 	textureLoader = new THREE.TextureLoader();
 	textureLoader.setCrossOrigin("anonymous");
 	textureLoader.load(path, function (texture) 
@@ -128,11 +131,33 @@ function onReplaceTexture(mesh, path)
 		    if (child instanceof THREE.Mesh) 
 		    {
 		        // apply texture
+		        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		        console.log(x);
+				texture.repeat.set( x, y );
 		        child.material.map = texture;
 		        child.material.needsUpdate = true;
 		    }
 		});
     });
+
+    if(typeof normalMap !== 'undefined')
+    {
+    	textureLoader.load(normalMap, function (texture) 
+		{
+		    mesh.traverse(function (child) 
+		    {
+			    if (child instanceof THREE.Mesh) 
+			    {
+			        // apply texture
+			        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+			        console.log(x);
+					texture.repeat.set( 1, 1 );
+			        child.material.normalMap = texture;
+			        child.material.needsUpdate = true;
+			    }
+			});
+	    });
+    }
 }
 
 

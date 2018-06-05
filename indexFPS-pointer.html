@@ -5,6 +5,10 @@
 </head>
 <body>
 
+
+
+
+
 <script type="text/javascript">
 
 var container, stats;
@@ -26,6 +30,7 @@ var params = { opacity: 0.5 };
 <script src="js/OrbitControls.js"></script>
 <script src="js/dat.gui.min.js"></script>
 <script src="js/inflate.min.js"></script>
+<script src="js/PointerLockControls.js"></script>
 
 <!--outline-->
 <script src="js/Detector.js"></script>
@@ -36,18 +41,18 @@ var params = { opacity: 0.5 };
 <script src="js/ShaderPass.js"></script>
 <script src="js/OutlinePass.js"></script>
 
+<!--youtube-->
+<script src="js/renderers/CSS3DRenderer.js"></script>
 
 <script src="JimJs/JimDoor.js"></script>
 <script src="JimJs/JimFBX.js"></script>
+<script src="JimJs/customFPS2.js"></script>
 <script src="JimJs/customOutline.js"></script>
 
-
-<script src="js/GuiSpawner.js"></script>
 
 <script type="text/javascript">
 init();
 animate();
-
 
 function init() 
 {
@@ -58,23 +63,26 @@ function init()
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-	camera.position.set(0,10,0);
+	camera.position.set(0,3,0);
 	camera.rotateX(-Math.PI/2);
-	controls = new THREE.OrbitControls( camera );
 
-
-	startJimDoor();
-	guiSpawner();
+	initFPS2(2, 100);
+	console.log("sdfgdfg");
+	controls = new THREE.PointerLockControls( camera );
+	scene.add( controls.getObject() );
+	controls.enabled = true;
 
 	gridHelper = new THREE.GridHelper( 100, 22 );
 	//scene.add( gridHelper );
 	// Cube
-
+	isUsingTexture_JimDoor = false;
 
 	//initobj(0.1);
 
 	//initobj(10);
 	initobj(1);
+
+
 	function initobj(s)
 	{
 		scale = s;
@@ -116,6 +124,9 @@ function init()
 		makeWindows(9.99, -15.71, 1, 9.84);
 		makeWindows(-18.96, -25.33, 9.88, 1);
 		makeWindows(-3.22, -25.33, 6.5, 1);
+
+
+
 		
 	}
 
@@ -134,12 +145,16 @@ function init()
 	ground = makeCube(1000,1,700,0,-1,0,new THREE.Color(0x2FC313));
 
 	var ground2 = makeCube(40,0.6,48,-9.5,-0.5,-2,new THREE.Color(0xffffff));
-	onReplaceTexture(ground2, "JimJs/wood floor.jpg");
+	onReplaceTexture(ground2, "Textures/Wood Plank floor/floor_planks-l-color.jpg", 1,1, "Textures/Wood Plank floor/floor_planks-l-normal.jpg");
+
+	var groupPic = makeCube(0.1,3,4,-8.7,7,5,new THREE.Color(0xffffff));
+	onReplaceTexture(groupPic, "groupPic.jpg");
 
 	var bed1 = makeCube(19,0.7,19,-19,-0.5,12,new THREE.Color(0xff0000));
-	//onReplaceTexture(bed1, "JimJs/wood floor.jpg");
+	onReplaceTexture(bed1, "Textures/Carpet floor/fabric_pattern_tweed02-l-color.jpg", 5, 3, "Textures/Carpet floor/fabric_pattern_tweed02-l-normal.jpg");
 
 	var bed2 = makeCube(19,0.7,19,-19,-0.5,-15,new THREE.Color(0x00ff00));
+	onReplaceTexture(bed2, "Textures/Carpet floor/fabric_pattern_tweed02-l-color.jpg", 5, 3, "Textures/Carpet floor/fabric_pattern_tweed02-l-normal.jpg");
 
 	var toilet = makeCube(15,0.7,9,-24.5,-0.5,-2,new THREE.Color(0x0000ff));
 	onReplaceTexture(toilet, "Textures/Tile Floor/floor_tiles_04-l-color.jpg", 5, 3, "Textures/Tile Floor/floor_tiles_04-l-normal.jpg");
@@ -271,6 +286,7 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 
 	loader.onLoad();
 
+
 	renderer = new THREE.WebGLRenderer();
 	//renderer = new THREE.CanvasRenderer();
 
@@ -282,30 +298,26 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 
 	stats = new Stats();
 	container.appendChild( stats.dom );
+	startJimDoor();
 	initOutline();
-
+	isCentre = true;
+	console.log("sdfgdfg");
 }
 
 
-<<<<<<< HEAD
-function animate() {
-=======
 
 function animate() 
 {
->>>>>>> master
 	stats.update();
 	render();
 	requestAnimationFrame( animate );
-
 }
 
 function render() 
 {
+	updateFPS();
 	JimUpdate();
 	composer.render();
-	//renderer.render( scene, camera );
-
 }
 
 </script>
