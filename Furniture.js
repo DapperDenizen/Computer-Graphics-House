@@ -42,6 +42,7 @@ class Furniture {
                     newNodes.push(nodeMap[x][y]);
                     }else if(nodeMap[x][y].isOccupied()  == true){
                         console.log("ERROR- two objects collided");
+                        return false;
                         //move back to previous position or figure out what we're gunna do!
                     }
                 }
@@ -49,6 +50,7 @@ class Furniture {
             }
         }
         this.ActivateNodes(newNodes);
+        return true;
     }
 
 

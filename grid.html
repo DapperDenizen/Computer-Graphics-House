@@ -31,6 +31,8 @@
 		var movingX = 0;
 		var movingZ = 0;
 		var thingY = 0;
+		var returnPositionX;
+		var returnPositionZ;
 		var furnitures = [];
 		//------------------------------------------------------------camera, scene, renderer
 		//renderer
@@ -112,8 +114,7 @@
 		furnitureRef.RotateShape();
 		}
 		furniture.CheckSittingOn = function(){
-			console.log("CALLED");
-		furnitureRef.CheckSittingOn()
+		return furnitureRef.CheckSittingOn();
 		}
 		}
 
@@ -164,6 +165,8 @@
 				var debugNode = new THREE.Mesh(debugGeo,debugMaterial);
 				if(tempgrid[i].isOccupied()){
 					debugNode.material.color.setHex( 0xF1CBFF );
+				}else{
+					debugNode.material.color.setHex( 0x330000 );
 				}
 				debugNode.position.set(tempgrid[i].xPos,-5,tempgrid[i].yPos); 
 				scene.add(debugNode);
@@ -178,16 +181,30 @@
 			var intersects = raycaster.intersectObjects(furnitures,true);
 			//this checks if the array has hit thing1
 			if (intersects.length > 0) {
+				//console.log(intersects);
 				//console.log(intersects[0].object.name);
 				if (intersects[0].object.name == "Furniture") {
 					//itemHeld means thing1 will travel with the mouse on the plane
 					if(itemHeld){
+						//dropping off
+						if(intersects[0].object.parent.CheckSittingOn()){
 						debugGrid = null;
 						itemHeld = false;
 						heldItem = null;
-						intersects[0].object.parent.CheckSittingOn();
+						}else{
+						//console.log(returnPosition);
+						heldItem.position.set(returnPositionX,thingY,returnPositionZ);
+						itemHeld = false;
+						heldItem = null;
+					}
 					}else{
+						//picking up
+						returnPositionX = intersects[0].object.position.x;
+						returnPositionZ = intersects[0].object.position.z;
+						thingY = intersects[0].object.position.y;
+						console.log(thingY);
 						heldItem = intersects[0].object
+						//returnPosition = intersects[0].object.position;
 						itemHeld = true;
 					}
 					
