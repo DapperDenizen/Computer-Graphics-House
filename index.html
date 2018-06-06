@@ -139,7 +139,7 @@ function init()
 	var bed1 = makeCube(19,0.7,19,-19,-0.5,12,new THREE.Color(0xff0000));
 	//onReplaceTexture(bed1, "JimJs/wood floor.jpg");
 
-	var bed2 = makeCube(19,0.7,19,-19,-0.5,-15,new THREE.Color(0x00ff00));
+	var bed2 = makeCube(19,0.7,18.2,-19,-0.5,-15.7,new THREE.Color(0x00ff00));
 
 	var toilet = makeCube(15,0.7,9,-24.5,-0.5,-2,new THREE.Color(0x0000ff));
 	onReplaceTexture(toilet, "Textures/Tile Floor/floor_tiles_04-l-color.jpg", 5, 3, "Textures/Tile Floor/floor_tiles_04-l-normal.jpg");
@@ -162,7 +162,7 @@ loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180);
 loader.load('Prop_TowelRail.fbx', -8.17, 1.53, 0.64, 180);
 loader.load('Prop_TowelSmall_Blue.fbx', -8.45, 1.42, 0.51, 180);
 loader.load('Prop_TowelBig_Red.fbx', -7.96, 1.36, 0.51, 180);
-loader.load('Prop_PowerPoint.fbx', -8.78, 0.61, 0.64, 180);
+loader.load('Prop_PowerPoint.fbx', -8.78, 0.61, 0.61, 180);
 loader.load('Prop_BathroomCabinet_White.fbx', -7.31, 0, -2.06, 0);
 loader.load('Prop_SoapDish.fbx', -6.82, 1.36, -1.9, 0);
 loader.load('Prop_SoapDispencer.fbx', -7.97, 1.36, -1.9, 90);
@@ -216,13 +216,13 @@ loader.load('Prop_Table_03.fbx', -0.96, 0, 2.9, 90);
     loader.load('Prop_Chair_06.fbx', 0.66, 0, 3.88, 270);
     loader.load('Prop_Chair_06.fbx', -2.35, 0, 2.19, 90);
     loader.load('Prop_Chair_06.fbx', 0.64, 0, 1.98, 270);
-loader.load('Prop_KitchenSink_Black.fbx', 4.51, 0, 2.19, 270);
-    loader.load('Prop_Microwave.fbx', 2.7, 1.36, 3.4, 270);
-    loader.load('Prop_PlateDryer.fbx', 2.7, 1.35, 2.67, 0);
-    loader.load('Prop_Cupboards_Black.fbx', 3.21, 2.5, 3.82, 270);
-loader.load('Prop_Oven_White.fbx', 2.61, 0, 5.95, 270);
-    loader.load('Prop_RangeHood.fbx', 2.85, 0, 5.98, 270);
-loader.load('Prop_Fridge_01.fbx', 2.49, 0, 6.99, 270);
+loader.load('Prop_KitchenSink_Black.fbx', 4.31, 0, 2.19, 270);
+    loader.load('Prop_Microwave.fbx', 2.9, 1.36, 3.4, 270);
+    loader.load('Prop_PlateDryer.fbx', 2.9, 1.35, 2.67, 0);
+    loader.load('Prop_Cupboards_Black.fbx', 3.41, 2.5, 3.82, 270);
+loader.load('Prop_Oven_White.fbx', 2.81, 0, 5.95, 270);
+    loader.load('Prop_RangeHood.fbx', 3.05, 0, 5.98, 270);
+loader.load('Prop_Fridge_01.fbx', 2.89, 0, 6.99, 270);
     loader.load('Prop_Plant_02.fbx', 2.79, 2.06, 7.01, 0);
 loader.load('Prop_Curtains_Blue.fbx', 0.95, -0.5, 7.7, 180);
 loader.load('Prop_WallArt_01.fbx', -3.22, 2.49, 5.62, 90);
@@ -261,10 +261,10 @@ loader.load('Prop_Desk_01.fbx', -4.42, 0, -5.66, 270);
     loader.load('Prop_Computer_Screen.fbx', -4.33, 1.49, -5.64, 270);
     loader.load('Prop_Books_02.fbx', -5.1, 1.49, -6.79, 270);
     loader.load('Prop_Desk_Lamp.fbx', -4.06, 1.48, -4.3, 270);
-loader.load('Prop_Shelf_013.fbx', -6.58, 0, -8.44, 0);
-    loader.load('Prop_Books_02.fbx', -6.64, 0.3, -8.4, 0);
-    loader.load('Prop_Lamp_01.fbx', -6.54, 1.57, -8.46, 0);
-loader.load('Prop_Shelf_08.fbx', -4.87, 0, -8.36, 0);
+loader.load('Prop_Shelf_013.fbx', -6.58, 0, -8.84, 0);
+    loader.load('Prop_Books_02.fbx', -6.64, 0.3, -7.9, 0);
+    loader.load('Prop_Lamp_01.fbx', -6.54, 1.57, -8.83, 0);
+loader.load('Prop_Shelf_08.fbx', -4.87, 0, -8.76, 0);
 loader.load('Prop_Desk_Chair.fbx', -6.25, 0, -6.09, 29.03);
     loader.load('Prop_Desk_Chair_Base.fbx', -6.25, 0, -6.09, 29.03);
 loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
@@ -287,13 +287,8 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 }
 
 
-<<<<<<< HEAD
-function animate() {
-=======
-
 function animate() 
 {
->>>>>>> master
 	stats.update();
 	render();
 	requestAnimationFrame( animate );
