@@ -101,7 +101,6 @@ class Node{
         this.yPos = yPos; // world Z pos
         this.gridPos = gridPos // [x,y] grid positions
         this.occupied =false;
-        console.log(this.occupied);
 
     }
     isOccupied(){

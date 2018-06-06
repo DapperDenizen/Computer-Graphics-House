@@ -1,4 +1,5 @@
 
+this.furnitures = [];
 function JimFBX(scale)
 {
 	
@@ -10,11 +11,15 @@ function JimFBX(scale)
 	this.textureLoader = new THREE.TextureLoader();
 	this.textureLoader.setCrossOrigin("anonymous");
 
-	this.load = function(name, posX, posY, posZ, rotation)
+	this.load = function(name, posX, posY, posZ, rotation, shape, gridRef)
 	{
-		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation));
+		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation, shape, gridRef));
 	}
-	
+	this.getFurnitures = function()
+	{
+		return furnitures;
+	}
+
 	this.spawn = function(name, posX, posY, posZ, rotation)
 	{
 		this.calebObjs.push(new JimObj(name, posX, posY, posZ, rotation));
@@ -29,7 +34,7 @@ function JimFBX(scale)
 		{
 		    for (var i = n.length - 1; i >= 0; i--) 				
 				{
-				console.log('SimpleInteriorsHouses/Models/'+n[i].name);
+				//console.log('SimpleInteriorsHouses/Models/'+n[i].name);
 				l.load('SimpleInteriorsHouses/Models/'+n[i].name, initObj(n[i], scale, texture));
 				break;
 				}
@@ -46,7 +51,7 @@ function JimFBX(scale)
 		{
 		    for (var i = n.length - 1; i >= 0; i--) 
 			{
-				console.log('SimpleInteriorsHouses/Models/'+n[i].name);
+				//console.log('SimpleInteriorsHouses/Models/'+n[i].name);
 				l.load('SimpleInteriorsHouses/Models/'+n[i].name, initObj(n[i], scale, texture));
 			}
 			
@@ -63,7 +68,21 @@ function JimFBX(scale)
 			geo.rotateY((obj.rotation/180) *Math.PI);
 			//console.log(i+"A");
 			geo.position.set(obj.posX * scale, obj.posY * scale, obj.posZ * scale);
-			scene.add(geo);
+			var furniture = new THREE.Group();
+			var furnitureRef = new Furniture(geo,obj.shape,obj.gridRef,new THREE.Vector3(obj.posX,obj.posY,obj.posZ));
+			geo.name = "Furniture";
+			furniture.add(geo);
+			furnitures.push(furniture);
+
+			furniture.RotateShape = function(){
+				furnitureRef.RotateShape();
+				}
+				furniture.CheckSittingOn = function(){
+				return furnitureRef.CheckSittingOn();
+				}
+
+			scene.add(furniture);
+			//scene.add(geo);
 			geo.traverse(function (child) 
 		    {
 			    if (child instanceof THREE.Mesh) 
@@ -83,13 +102,15 @@ function JimFBX(scale)
 }
 
 
-function JimObj(name, posX, posY, posZ, rotation) 
+function JimObj(name, posX, posY, posZ, rotation, shape, gridRef) 
 {
 	this.name=name;
 	this.posX=posX;
 	this.posY=posY;
 	this.posZ=posZ;
 	this.rotation=rotation;
+	this.shape = shape;
+	this.gridRef = gridRef;
 }
 
 
@@ -150,7 +171,7 @@ function onReplaceTexture(mesh, path, x, y, normalMap)
 			    {
 			        // apply texture
 			        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-			        console.log(x);
+			        //console.log(x);
 					texture.repeat.set( 1, 1 );
 			        child.material.normalMap = texture;
 			        child.material.needsUpdate = true;

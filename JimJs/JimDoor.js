@@ -166,7 +166,7 @@ function JimUpdate()
 	{
 		//controls.reset();
 
-		console.log("zoom from "+camera.position.x);
+		//console.log("zoom from "+camera.position.x);
 		camera.position.set
 		(
 		 camera.position.x*10,
@@ -174,7 +174,7 @@ function JimUpdate()
 		 camera.position.z*10
 		);
 
-		console.log("to "+camera.position.x);
+		//console.log("to "+camera.position.x);
 	}else if(d>=100)
 	{
 		camera.position.set
@@ -261,7 +261,7 @@ function makeWindows(posX, posY, sizeX, sizeY)
 function makeWall2(posX, posY, sizeX, sizeY)
 {
 	var wall = makeCube(sizeX, 10, sizeY, posX,5,posY, new THREE.Color(1,1,1));
-	console.log(isUsingTexture_JimDoor);
+	//console.log(isUsingTexture_JimDoor);
 	if(isUsingTexture_JimDoor)
 	{
 		onReplaceTexture(wall, "Textures/Plaster Wall/eisklotz_plaster-01-l-color.jpg", 1, 1, "Textures/Plaster Wall/eisklotz_plaster-01-l-normal.jpg");

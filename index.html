@@ -43,8 +43,26 @@ var params = { opacity: 0.5 };
 
 
 <script src="js/GuiSpawner.js"></script>
-
+<script src="Grid.js"></script>
+<script src="Furniture.js"></script>
 <script type="text/javascript">
+
+//variables
+var heldItem;
+var itemHeld  = false;
+var movingX = 0;
+var movingZ = 0;
+var thingY = 0;
+var returnPositionX;
+var returnPositionZ;
+var furnitures = [];
+var floorArray = [];
+var grid = new Grid(30,30,0,-5,0);
+//raycast
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+//
+
 init();
 animate();
 
@@ -58,7 +76,7 @@ function init()
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-	camera.position.set(0,10,0);
+	camera.position.set(0,30,0);
 	camera.rotateX(-Math.PI/2);
 	controls = new THREE.OrbitControls( camera );
 
@@ -132,10 +150,10 @@ function init()
 	makeLight( 1.93, 16.67, 1);
 
 	ground = makeCube(1000,1,700,0,-1,0,new THREE.Color(0x2FC313));
-
+	floorArray.push( ground);
 	var ground2 = makeCube(40,0.6,48,-9.5,-0.5,-2,new THREE.Color(0xffffff));
 	onReplaceTexture(ground2, "JimJs/wood floor.jpg");
-
+	floorArray.push( ground2);
 	var bed1 = makeCube(19,0.7,19,-19,-0.5,12,new THREE.Color(0xff0000));
 	//onReplaceTexture(bed1, "JimJs/wood floor.jpg");
 
@@ -152,27 +170,32 @@ function init()
 		console.log("aseflrng");
 		this.material.color = new THREE.Color(Math.random(), Math.random(), Math.random());
 	}
-
-
-	
+	//debug purposes only
+	var box1Shape = [
+			[0,0,0,0],
+			[0,1,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+		];
+	//
 	var loader = new JimFBX(2.7);
 
 //toilet
-loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180);
-loader.load('Prop_TowelRail.fbx', -8.17, 1.53, 0.64, 180);
-loader.load('Prop_TowelSmall_Blue.fbx', -8.45, 1.42, 0.51, 180);
-loader.load('Prop_TowelBig_Red.fbx', -7.96, 1.36, 0.51, 180);
-loader.load('Prop_PowerPoint.fbx', -8.78, 0.61, 0.61, 180);
-loader.load('Prop_BathroomCabinet_White.fbx', -7.31, 0, -2.06, 0);
-loader.load('Prop_SoapDish.fbx', -6.82, 1.36, -1.9, 0);
-loader.load('Prop_SoapDispencer.fbx', -7.97, 1.36, -1.9, 90);
-loader.load('Prop_MirrorBrown.fbx', -7.31, 2.47, -2.06, 0);
-loader.load('Prop_Toilet_01.fbx', -8.82, 0, -2.01, 0);
-loader.load('Prop_Plant_01.fbx', -8.81, 1.71, -1.78, 90);
-loader.load('Prop_ToiletRoll_02.fbx', -9.67, 1.44, -2.06, 0);
-loader.load('Prop_ToiletBrush_01.fbx', -9.6, 0, -1.68, 90);
-loader.load('Prop_WallArt_02.fbx', -8.85, 2.61, -2.02, 0);
-
+loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180,box1Shape,grid);
+loader.load('Prop_TowelRail.fbx', -8.17, 1.53, 0.64, 180,box1Shape,grid);
+loader.load('Prop_TowelSmall_Blue.fbx', -8.45, 1.42, 0.51, 180,box1Shape,grid);
+loader.load('Prop_TowelBig_Red.fbx', -7.96, 1.36, 0.51, 180,box1Shape,grid);
+loader.load('Prop_PowerPoint.fbx', -8.78, 0.61, 0.61, 180,box1Shape,grid);
+loader.load('Prop_BathroomCabinet_White.fbx', -7.31, 0, -2.06, 0,box1Shape,grid);
+loader.load('Prop_SoapDish.fbx', -6.82, 1.36, -1.9, 0,box1Shape,grid);
+loader.load('Prop_SoapDispencer.fbx', -7.97, 1.36, -1.9, 90,box1Shape,grid);
+loader.load('Prop_MirrorBrown.fbx', -7.31, 2.47, -2.06, 0,box1Shape,grid);
+loader.load('Prop_Toilet_01.fbx', -8.82, 0, -2.01, 0,box1Shape,grid);
+loader.load('Prop_Plant_01.fbx', -8.81, 1.71, -1.78, 90,box1Shape,grid);
+loader.load('Prop_ToiletRoll_02.fbx', -9.67, 1.44, -2.06, 0,box1Shape,grid);
+loader.load('Prop_ToiletBrush_01.fbx', -9.6, 0, -1.68, 90,box1Shape,grid);
+loader.load('Prop_WallArt_02.fbx', -8.85, 2.61, -2.02, 0,box1Shape,grid);
+/*
 //living room
 loader.load('Prop_Flower_Pot_01.fbx', -3.02, -0.35, -2.9, 0);
 loader.load('Prop_Big_Chair_01.fbx', -1.07, -0.35, -8.25, 0);
@@ -268,9 +291,11 @@ loader.load('Prop_Shelf_08.fbx', -4.87, 0, -8.76, 0);
 loader.load('Prop_Desk_Chair.fbx', -6.25, 0, -6.09, 29.03);
     loader.load('Prop_Desk_Chair_Base.fbx', -6.25, 0, -6.09, 29.03);
 loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
-
+//*/
 	loader.onLoad();
-
+	
+	//this.furnitures = loader.furnitures;
+	furnitures = loader.getFurnitures();
 	renderer = new THREE.WebGLRenderer();
 	//renderer = new THREE.CanvasRenderer();
 
@@ -285,10 +310,71 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 	initOutline();
 
 }
+//Control functions
 
+function onClick(event) {
+//raycast
+raycaster.setFromCamera(mouse, camera);
+// calculate objects intersecting the picking ray
+var intersects = raycaster.intersectObjects(furnitures,true);
+//this checks if the array has hit thing1
+console.log(furnitures);
+		if (intersects.length > 0) {
+				//console.log(intersects);
+				console.log(intersects[0].object);
+			if (intersects[0].object.parent.name == "Furniture") {
+					//itemHeld means thing1 will travel with the mouse on the plane
+				if(itemHeld){
+						//dropping off
+					if(intersects[0].object.parent.parent.CheckSittingOn()){
+						debugGrid = null;
+						itemHeld = false;
+						heldItem = null;
+					}else{
+						//console.log(returnPosition);
+						heldItem.position.set(returnPositionX,thingY,returnPositionZ);
+						itemHeld = false;
+						heldItem = null;
+		}
+			}else{
+						//picking up
+						returnPositionX = intersects[0].object.position.x;
+						returnPositionZ = intersects[0].object.position.z;
+						thingY = intersects[0].object.position.y;
+						console.log(thingY);
+						heldItem = intersects[0].object
+						//returnPosition = intersects[0].object.position;
+						itemHeld = true;
+			}
+					
+		}
 
+	}
+
+}
+function onMouseMove(event) {
+if(itemHeld){
+mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+}
+}
+
+window.addEventListener('mousemove', onMouseMove, false);
+window.addEventListener('mousedown', onClick, false);
+//
 function animate() 
 {
+	if(itemHeld){
+				//raycast onto the floor
+				raycaster.setFromCamera(mouse, camera);
+				var intersects = raycaster.intersectObjects(floorArray);			
+				if(intersects[0] != null){
+				var tempNode = grid.nodeFromWorldPoint(intersects[0].point);
+				movingX = tempNode.xPos;
+				movingZ = tempNode.yPos;
+				}
+				heldItem.position.set(movingX, thingY, movingZ);
+			}
 	stats.update();
 	render();
 	requestAnimationFrame( animate );
