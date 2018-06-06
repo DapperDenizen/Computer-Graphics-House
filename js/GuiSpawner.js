@@ -11,7 +11,7 @@ function guiSpawner()
 		
 		this.spawn = function spawn()
 		{					
-		loader.spawn(object, 2.7,4.8,-7.05, rotation); 
+		loader.spawn(object, 0,0,0, rotation); 
 		loader.onClick();}		
 	};
 	
