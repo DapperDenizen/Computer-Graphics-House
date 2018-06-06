@@ -34,6 +34,8 @@ var params = { opacity: 0.5 };
 
 
 <script type="text/javascript">
+var furnitures = [];
+var floors = [];
 init();
 animate();
 
@@ -129,11 +131,11 @@ function init() {
 	makeLight(1.928999, 16.67, 1);
 
 	ground = makeCube(1000,1,700,0,-1,0,new THREE.Color(0x2FC313));
-
+	floors.push(ground);
 	var ground2 = makeCube(40,0.6,48,-9.5,-0.5,-2,new THREE.Color(0xffffff));
-
+	floors.push(ground2);
 	var ground3 = makeCube(0.1,2.7,4.03,-7.05,4.1,-12.77,new THREE.Color(0xffffff));
-
+	floors.push(ground3);
 	ground3.name = 'TV';
 	ground3.onClick = function()
 	{
@@ -145,23 +147,32 @@ function init() {
 	
 	var loader = new JimFBX(2.7);
 
-//toilet
-/*
-loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180);
-loader.load('Prop_TowelRail.fbx', -8.17, 1.53, 0.64, 180);
-loader.load('Prop_TowelSmall_Blue.fbx', -8.45, 1.42, 0.51, 180);
-loader.load('Prop_TowelBig_Red.fbx', -7.96, 1.36, 0.51, 180);
-loader.load('Prop_PowerPoint.fbx', -8.78, 0.61, 0.64, 180);
-loader.load('Prop_BathroomCabinet_White.fbx', -7.31, 0, -2.06, 0);
-loader.load('Prop_SoapDish.fbx', -6.82, 1.36, -1.9, 0);
-loader.load('Prop_SoapDispencer.fbx', -7.97, 1.36, -1.9, 90);
-loader.load('Prop_MirrorBrown.fbx', -7.31, 2.47, -2.06, 0);
-loader.load('Prop_Toilet_01.fbx', -8.82, 0, -2.01, 0);
-loader.load('Prop_Plant_01.fbx', -8.81, 1.71, -1.78, 90);
-loader.load('Prop_ToiletRoll_02.fbx', -9.67, 1.44, -2.06, 0);
-loader.load('Prop_ToiletBrush_01.fbx', -9.6, 0, -1.68, 90);
-loader.load('Prop_WallArt_02.fbx', -8.85, 2.61, -2.02, 0);
+	var grid =  new Grid(100,100,0,-5,0);
 
+	var box1Shape = [
+			[0,0,0,0],
+			[0,1,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+		];
+
+//toilet
+
+loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180 ,box1Shape,Grid);
+loader.load('Prop_TowelRail.fbx', -8.17, 1.53, 0.64, 180,box1Shape,Grid);
+loader.load('Prop_TowelSmall_Blue.fbx', -8.45, 1.42, 0.51, 180,box1Shape,Grid);
+loader.load('Prop_TowelBig_Red.fbx', -7.96, 1.36, 0.51, 180,box1Shape,Grid);
+loader.load('Prop_PowerPoint.fbx', -8.78, 0.61, 0.64, 180,box1Shape,Grid);
+loader.load('Prop_BathroomCabinet_White.fbx', -7.31, 0, -2.06, 0,box1Shape,Grid);
+loader.load('Prop_SoapDish.fbx', -6.82, 1.36, -1.9, 0,box1Shape,Grid);
+loader.load('Prop_SoapDispencer.fbx', -7.97, 1.36, -1.9, 90,box1Shape,Grid);
+loader.load('Prop_MirrorBrown.fbx', -7.31, 2.47, -2.06, 0,box1Shape,Grid);
+loader.load('Prop_Toilet_01.fbx', -8.82, 0, -2.01, 0,box1Shape,Grid);
+loader.load('Prop_Plant_01.fbx', -8.81, 1.71, -1.78, 90,box1Shape,Grid);
+loader.load('Prop_ToiletRoll_02.fbx', -9.67, 1.44, -2.06, 0,box1Shape,Grid);
+loader.load('Prop_ToiletBrush_01.fbx', -9.6, 0, -1.68, 90,box1Shape,Grid);
+loader.load('Prop_WallArt_02.fbx', -8.85, 2.61, -2.02, 0,box1Shape,Grid);
+/*
 //living room
 loader.load('Prop_Flower_Pot_01.fbx', -3.02, -0.35, -2.9, 0);
 loader.load('Prop_Big_Chair_01.fbx', -1.07, -0.35, -8.25, 0);
@@ -275,9 +286,76 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 
 }
 
+//
+function onClick(event) {
+				//raycast
+				raycaster.setFromCamera(mouse, camera);
+			// calculate objects intersecting the picking ray
+			var intersects = raycaster.intersectObjects(furnitures,true);
+			//this checks if the array has hit thing1
+			if (intersects.length > 0) {
+				//console.log(intersects);
+				//console.log(intersects[0].object.name);
+				if (intersects[0].object.parent.name == "Furniture") {
+					//itemHeld means thing1 will travel with the mouse on the plane
+					if(itemHeld){
+						//dropping off
+						if(intersects[0].object.parent.parent.CheckSittingOn()){
+						debugGrid = null;
+						itemHeld = false;
+						heldItem = null;
+						}else{
+						//console.log(returnPosition);
+						heldItem.position.set(returnPositionX,thingY,returnPositionZ);
+						itemHeld = false;
+						heldItem = null;
+					}
+					}else{
+						//picking up
+						returnPositionX = intersects[0].object.position.x;
+						returnPositionZ = intersects[0].object.position.z;
+						thingY = intersects[0].object.position.y;
+						console.log(thingY);
+						heldItem = intersects[0].object
+						//returnPosition = intersects[0].object.position;
+						itemHeld = true;
+					}
+					
+				}
 
+			}
+
+		}
+
+			function onMouseMove(event) {
+
+			// calculate mouse position in normalized device coordinates
+			// (-1 to +1) for both components
+			mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+		}
+
+		window.addEventListener('mousemove', onMouseMove, false);
+		window.addEventListener('mousedown', onClick, false); //need to change from mouse down to whatever just the leftclick would be
+		
+//
 
 function animate() {
+
+//
+	if(itemHeld){
+				//raycast onto the floor
+				raycaster.setFromCamera(mouse, camera);
+				var intersects = raycaster.intersectObjects(floors);			
+				if(intersects[0] != null){
+				var tempNode = grid.nodeFromWorldPoint(intersects[0].point);
+				movingX = tempNode.xPos;
+				movingZ = tempNode.yPos;
+				}
+				heldItem.position.set(movingX, thingY, movingZ);
+			}
+//
 	stats.update();
 	render();
 	requestAnimationFrame( animate );
