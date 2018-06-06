@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+</head>
+<body>
+<script>
+
+var div = document.createElement( 'div' );
+div.style.width = '480px';
+div.style.height = '360px';
+div.style.backgroundColor = '#000';
+
+var iframe = document.createElement( 'iframe' );
+iframe.style.width = '480px';
+iframe.style.height = '360px';
+iframe.style.border = '0px';
+iframe.src = [ 'https://www.youtube.com/embed/', 'Y2-xZ-1HE-Q', '?rel=0' ].join( '' );
+iframe.src = 'https://www.ebay.com';
+
+document.body.appendChild( div );
+div.appendChild( iframe );
+console.log("sdfsdf");
+</script>
+</body>
+</html>
