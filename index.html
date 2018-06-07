@@ -82,7 +82,7 @@ function init()
 
 
 	startJimDoor();
-	guiSpawner();
+	
 
 	gridHelper = new THREE.GridHelper( 100, 22 );
 	//scene.add( gridHelper );
@@ -179,7 +179,7 @@ function init()
 		];
 	//
 	var loader = new JimFBX(2.7);
-
+	guiSpawner(grid, box1Shape);
 //toilet
 loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180,box1Shape,grid);
 loader.load('Prop_TowelRail.fbx', -8.17, 1.53, 0.64, 180,box1Shape,grid);
@@ -310,6 +310,9 @@ loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
 	initOutline();
 
 }
+
+
+
 //Control functions
 
 function onClick(event) {

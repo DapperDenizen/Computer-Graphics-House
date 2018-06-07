@@ -20,9 +20,9 @@ function JimFBX(scale)
 		return furnitures;
 	}
 
-	this.spawn = function(name, posX, posY, posZ, rotation)
+	this.spawn = function(name, posX, posY, posZ, rotation, shape, gridRef)
 	{
-		this.calebObjs.push(new JimObj(name, posX, posY, posZ, rotation));
+		this.calebObjs.push(new JimObj(name, posX, posY, posZ, rotation, shape, gridRef));
 	}
 	
 	this.onClick = function()
