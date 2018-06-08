@@ -21,15 +21,20 @@ function JimFBX(scale)
 
 
 	//this function add the info to the array
-	this.load = function(name, posX, posY, posZ, rotation, shape, gridRef)
+	this.load = function(name, posX, posY, posZ, rotation)
+	{
+		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation));
+	}
+	
+	this.set = function(name, posX, posY, posZ, rotation, shape, gridRef)
 	{
 		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation, shape, gridRef));
 	}
+	
 	this.getFurnitures = function()
 	{
 		return furnitures;
 	}
-
 
 	//this function go though all the obj in the array and import them
 
@@ -78,9 +83,9 @@ function JimFBX(scale)
 	}
 
 
-	this.spawn = function(name, posX, posY, posZ, rotation)
+	this.spawn = function(name, posX, posY, posZ, rotation, shape)
 	{
-		this.calebObjs.push(new JimObj(name, posX, posY, posZ, rotation));
+		this.calebObjs.push(new CalebObj(name, posX, posY, posZ, rotation, grid, shape));
 	}
 	
 	this.onClick = function()
@@ -110,7 +115,7 @@ function JimFBX(scale)
 			geo.rotateY((obj.rotation/180) *Math.PI);
 			
 			geo.position.set(obj.posX * scale, obj.posY * scale, obj.posZ * scale);
-
+			/*
 			var furniture = new THREE.Group();
 			var furnitureRef = new Furniture(geo,obj.shape,obj.gridRef,new THREE.Vector3(obj.posX,obj.posY,obj.posZ));
 			geo.name = "Furniture";
@@ -123,9 +128,9 @@ function JimFBX(scale)
 				furniture.CheckSittingOn = function(){
 				return furnitureRef.CheckSittingOn();
 				}
-
-			scene.add(furniture);
-			//scene.add(geo);
+			*/
+			//scene.add(furniture);
+			scene.add(geo);
 
 			geo.traverse(function (child) 
 		    {
@@ -148,8 +153,17 @@ function JimFBX(scale)
 
 //this is the format to save info 
 
-function JimObj(name, posX, posY, posZ, rotation, shape, gridRef) 
+function JimObj(name, posX, posY, posZ, rotation) 
 
+{
+	this.name=name;
+	this.posX=posX;
+	this.posY=posY;
+	this.posZ=posZ;
+	this.rotation=rotation;
+}
+
+function CalebObj(name, posX, posY, posZ, rotation, shape, gridRef) 
 {
 	this.name=name;
 	this.posX=posX;
@@ -159,8 +173,6 @@ function JimObj(name, posX, posY, posZ, rotation, shape, gridRef)
 	this.shape = shape;
 	this.gridRef = gridRef;
 }
-
-
 
 
 //this function replace texture on the box 

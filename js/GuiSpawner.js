@@ -45,9 +45,6 @@ function guiSpawner(grid)
 		}
 	};
 	
-	object = "default";
-	rotation = 2;
-	
 	function CalebGui()
 	{
 		var text = new objectDef();
