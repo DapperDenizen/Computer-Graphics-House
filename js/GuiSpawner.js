@@ -1,9 +1,10 @@
 
-function guiSpawner()
+function guiSpawner(grid, shape)
 {
 	var loader = new JimFBX(2.7);	
 	var obj;
 	var rot;
+	//var gref = 0;
 	var objectDef = function()
 	{
 		this.object = "";
@@ -11,8 +12,10 @@ function guiSpawner()
 		
 		this.spawn = function spawn()
 		{					
-		loader.spawn(object, 0,0,0, rotation); 
-		loader.onClick();}		
+		loader.spawn(object, 0,0,0, rotation, shape, grid);
+		loader.onClick();
+		//gref ++;
+		}
 	};
 	
 	object = "default";
