@@ -82,7 +82,7 @@ function init()
 
 
 	startJimDoor();
-	guiSpawner();
+	
 
 	gridHelper = new THREE.GridHelper( 100, 22 );
 	//scene.add( gridHelper );
@@ -196,6 +196,9 @@ function init()
 		[0,1,1,0],
 	];
 	//
+
+	guiSpawner(grid);
+	
 	var loader = new JimFBX(2.7);
 /*
 //toilet

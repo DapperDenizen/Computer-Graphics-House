@@ -1,15 +1,42 @@
 
-function guiSpawner(grid, shape)
+function guiSpawner(grid)
 {
 	var loader = new JimFBX(2.7);	
+	var shape;
 	var obj;
 	var rot;
-	//var gref = 0;
+	
+	var smallBoxShape = [
+			[0,0,0,0],
+			[0,1,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+		];
+	var mediumBoxShape = [
+		[0,0,0,0],
+		[0,1,1,0],
+		[0,1,1,0],
+		[0,0,0,0],
+	];
+	var LargeBoxShape = [
+		[1,1,1,1],
+		[1,1,1,1],
+		[1,1,1,1],
+		[1,1,1,1],
+	];
+	var LargeRecShape = [
+		[0,1,1,0],
+		[0,1,1,0],
+		[0,1,1,0],
+		[0,1,1,0],
+	];
+	
 	var objectDef = function()
 	{
 		//default values
 		this.object = "";
 		this.rotation = 0;
+		this.shape = smallBoxShape;
 		//spawns the object using JimFBX loader
 		this.spawn = function spawn()
 		{					
@@ -35,14 +62,28 @@ function guiSpawner(grid, shape)
 	};
 	CalebGui();
 	
+	//checks the object and gets the correct shape for the grid
+	//I would add more ORs to the if statements, if the grid was properly working
+	function shapeCheck()
+	{
+		if(object == 'Prop_Small_Table_01.fbx')
+			shape = mediumBoxShape;
+			
+		else if(object == 'Prop_BunkBed_Blue' || 'Prop_SingleBed_Pink.fbx')
+			shape = LargeRecShape
+	}
+	
 	//gets the values set in the gui
 	obj.onChange(function(value){
 		object = value;
+		shapeCheck();
 	});
 	
 	rot.onChange(function(value){
 		rotation = value;
 	});
+	
+	
 };
 
 
