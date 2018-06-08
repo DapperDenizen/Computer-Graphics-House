@@ -74,9 +74,9 @@ var a =`
 		<div id="blocker">
 
 			<div id="instructions">
-				<span style="font-size:40px">Click to play</span>
+				<span style="font-size:40px">Click to play(F to pick)</span>
 				<br />
-				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around, F to pick)
 			</div>
 
 		</div>
@@ -85,6 +85,7 @@ var a =`
 <div id= 'sight2'/>
 
 `;
+//wirte the html code above
 document.write(a);
 
 //
@@ -96,8 +97,11 @@ var objects = [];
 
 var raycaster;
 
+//get the html element
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
+
+//this two div element is the front sight on the center of screen
 var sight1 = document.getElementById( 'sight1' );
 var sight2 = document.getElementById( 'sight2' );
 
@@ -260,12 +264,6 @@ function initFPS2(theHigh, walkSpeed)
 function updateFPS() 
 {
 	Movement();
-	Pick();
-}
-
-function Pick() 
-{
-	
 }
 
 function Movement()

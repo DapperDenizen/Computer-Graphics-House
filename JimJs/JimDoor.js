@@ -1,4 +1,3 @@
-
 var objs = [];
 var doors = [];
 var sun;
@@ -8,8 +7,12 @@ var jimMouse;
 var g;
 var scale = 10;
 var isUsingTexture_JimDoor = false;
+var isInfinity_JimDoor = false;
+
 
 var zoom = 10;
+
+//inst the gui
 function guiStart()
 {
 	var paramater = 
@@ -18,35 +21,35 @@ function guiStart()
 		zoom:1
 	};
 	var gui = new dat.GUI();
+
+	gui.add({ Orbit_Control:function(){ window.location.href = "index - orbitControl.html"; }},'Orbit_Control');
+	gui.add({ FPS:function(){ window.location.href = "index - FPS.html"; }},'FPS');
+	gui.add({ Infinity_Mode:function(){ window.location.href = "index - infinity.html"; }},'Infinity_Mode');
+
 	gui.add( paramater, 'sunSpeed', 0, 0.1 ).onChange( function () {
 		sunSpeed = paramater.sunSpeed;
 	} );
 
-	gui.add( paramater, 'zoom', 0, 50.0 ).onChange( function () {
-		zoom = paramater.zoom;
-	} );
 	gui.open();
 }
 
-
+//this function start the Jim Door
 function startJimDoor()
 {
-
 	jimRaycaster = new THREE.Raycaster();
 	jimMouse = new THREE.Vector2();
 
 	guiStart();
 	makeSun();
-
 }
 
-
+//this function make the door
 function jimDoor(posX, posY, isClockwise, isStartHos, isLeft)
 {
 	var door = new THREE.Group();
 	var doorObj;
 	door.isClockwise = isClockwise;
-
+	
 	if(isStartHos)
 	{
 		var x;
@@ -67,14 +70,15 @@ function jimDoor(posX, posY, isClockwise, isStartHos, isLeft)
 	door.position.set(posX*scale,0,posY*scale);
 
 	door.isOpened = false;
+	//this function called when the door is clicked
 	door.OnOpen = function()
 	{
 		door.isMoving = true;
 	}
-
+//this function call every frame
 	door.update = function () 
 	{
-		if(this.isMoving)
+		if(this.isMoving)//if in moving state
 		{
 			var way = 0.05;
 			var max;
@@ -96,7 +100,7 @@ function jimDoor(posX, posY, isClockwise, isStartHos, isLeft)
 					this.isOpened = !this.isOpened;
 				}
 			}
-			else
+			else // if it finish moving. stop the movement
 			{
 				if((degree >88 && way>0) || (degree < 1 && way<0))
 				{
@@ -149,56 +153,51 @@ function onClick(event)
 
 window.addEventListener('mousedown', onClick, false);
 
-
+//this function will call on every frame
 function JimUpdate()
 {
+
 	sun.update();
+
+	//go though all the door, update them
 	for (var i = doors.length - 1; i >= 0; i--) 
 	{
 		doors[i].update();
 	}
 
-
-	var d = 3;//camera.position.distanceTo( new THREE.Vector3( 0, 0, 0 ) );
-	//console.log(d);
-
-	if(d<=2)
+	// if is in infinity mode
+	if(isInfinity_JimDoor)
 	{
-		//controls.reset();
+		//get the distance from camera to centre
+		var d = camera.position.distanceTo( new THREE.Vector3( 0, 0, 0 ) );
 
-		console.log("zoom from "+camera.position.x);
-		camera.position.set
-		(
-		 camera.position.x*10,
-		 camera.position.y*10,
-		 camera.position.z*10
-		);
-
-		console.log("to "+camera.position.x);
-	}else if(d>=100)
-	{
-		camera.position.set
-		(
-		 camera.position.x/10,
-		 camera.position.y/10,
-		 camera.position.z/10
-		);
+		//if is closer then 2 nuits
+		if(d<=2)
+		{
+			camera.position.set//move away the camera
+			(
+			 camera.position.x*10,
+			 camera.position.y*10,
+			 camera.position.z*10
+			);
+		}
+		else if(d>=100)//if is futher then 100 nuits
+		{
+			camera.position.set// pull back the camera
+			(
+			 camera.position.x/10,
+			 camera.position.y/10,
+			 camera.position.z/10
+			);
+		}
 	}
-	
-	
-	
 	
 }
 
-/*
-	jimDoor(18, -21, false, true, false );
-	jimDoor(-1, -2,  true, true , false );
-	jimDoor(-1, 7,  false, true , false );
-	jimDoor(-6, 5,  false, false, false );
-	jimDoor(3, 26,  false, true, true  );
-*/
+//this function init the sun
 function makeSun()
 {
+	// this sun is actually a ambient light
 	var ambientLight = new THREE.AmbientLight();
 	scene.add( ambientLight );
 	ambientLight.intensity = 0.5;
@@ -216,19 +215,21 @@ function makeSun()
 	var helper = new THREE.CameraHelper( light.shadow.camera );
 	//scene.add( helper );
 
+	//this function call every frame
 	sun.update = function()
 	{
+		//rotation the sun
 		this.rotation.x += sunSpeed;
 		var vector = new THREE.Vector3();
+		//change the intensity base on the position
 		vector.setFromMatrixPosition( this.children[0].matrixWorld );
 		this.children[0].intensity = vector.y/50;
 	}
 }
 
-
+//this function is too make the light
 function makeLight(posX, posY, intensity)
 {
-	//makeCube(1,1, 1, posX+1, 2, posY+1, new THREE.Color(1,1,1));
 	var spotLight = new THREE.SpotLight( 0xffffff,1 );
 	spotLight.position.set( posX*scale, 10*scale, posY *scale);
 	spotLight.angle = Math.PI/1;
@@ -250,18 +251,19 @@ function makeLight(posX, posY, intensity)
 	
 }
 
+//this function is to make the windows
 function makeWindows(posX, posY, sizeX, sizeY)
 {
+	//this windows made with 2 wall and a glass in between
 	makeCube(sizeX, 3, sizeY, posX,1.5,posY, new THREE.Color(1,1,1));
 	makeGlass(sizeX,4, sizeY, posX,5  ,posY);
 	makeCube(sizeX, 3, sizeY, posX,8.5,posY, new THREE.Color(1,1,1));
 }  
 
-
+//make wall base on position and size
 function makeWall2(posX, posY, sizeX, sizeY)
 {
 	var wall = makeCube(sizeX, 10, sizeY, posX,5,posY, new THREE.Color(1,1,1));
-	console.log(isUsingTexture_JimDoor);
 	if(isUsingTexture_JimDoor)
 	{
 		onReplaceTexture(wall, "Textures/Plaster Wall/eisklotz_plaster-01-l-color.jpg", 1, 1, "Textures/Plaster Wall/eisklotz_plaster-01-l-normal.jpg");
@@ -269,8 +271,10 @@ function makeWall2(posX, posY, sizeX, sizeY)
 	return wall;
 }
 
+//make wall base on 4 vertext of the wall
 function makeWall(posAx, posAy, posBx, posBy)
 {
+	//a wall is a special cube
 	var wall = makeCube((posBx - posAx),20,(posBy - posAy),posAx,10,posAy, new THREE.Color(1,1,1));
 	if(isUsingTexture_JimDoor)
 	{
@@ -279,10 +283,10 @@ function makeWall(posAx, posAy, posBx, posBy)
 	return wall;
 }
 
-
+//this is the function to make glass
 function makeGlass(sizeX, sizeY, sizeZ, posX, posY, posZ)
 {
-
+	//create a transparent material
 	var material = new THREE.MeshStandardMaterial( {
 				opacity: params.opacity,
 				//premultipliedAlpha: true,
@@ -298,6 +302,7 @@ function makeGlass(sizeX, sizeY, sizeZ, posX, posY, posZ)
 	return cube;
 }
 
+//packaging the threejs box making process into a function
 function makeCube(sizeX, sizeY, sizeZ, posX, posY, posZ, colorBox)
 {
 
@@ -319,9 +324,3 @@ function makeCube(sizeX, sizeY, sizeZ, posX, posY, posZ, colorBox)
 	cube.name = "cube";
 	return cube;
 }
-
-
-/*
-
-
-*/

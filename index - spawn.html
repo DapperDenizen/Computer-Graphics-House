@@ -14,7 +14,7 @@
 var container, stats;
 var controls;
 var camera, scene, renderer;
-var loader;
+
 var gridHelper;
 
 
@@ -45,12 +45,15 @@ var params = { opacity: 0.5 };
 <script src="JimJs/JimFBX.js"></script>
 <script src="JimJs/customOutline.js"></script>
 
+<script src="JimJs/ZacLighting.js"></script>
+
+
+<script src="JimJs/GuiSpawner.js"></script>
+
 
 <script type="text/javascript">
 init();
-
 animate();
-
 
 function init() 
 {
@@ -72,7 +75,7 @@ function init()
 	//scene.add( gridHelper );
 	// Cube
 
-
+	guiSpawner();
 	//initobj(0.1);
 
 	//initobj(10);
@@ -120,11 +123,53 @@ function init()
 		makeWindows(-3.22, -25.33, 6.5, 1);
 
 
+		var livingRoom = makeCube(40,0.6,48,-9.5,-0.5,-2,new THREE.Color(0xffffff));
+		onReplaceTexture(livingRoom, "JimJs/wood floor.jpg");
+
+		var outSide = makeCube(40,0.6,9,-9.5,-0.5,-30,new THREE.Color(0xffffff));
+		onReplaceTexture(outSide, "Textures/Wood Plank floor/floor_planks-l-color.jpg", 5,1, "Textures/Wood Plank floor/floor_planks-l-normal.jpg");
+
+		var toilet = makeCube(15,0.7,9,-24.5,-0.5,-2,new THREE.Color(0x0000ff));
+		onReplaceTexture(toilet, "Textures/Tile Floor/floor_tiles_04-l-color.jpg", 5, 3, "Textures/Tile Floor/floor_tiles_04-l-normal.jpg");
+
+		var groupPic = makeCube(0.1,3,4,-8.7,7,5,new THREE.Color(0xffffff));
+		onReplaceTexture(groupPic, "groupPic.jpg");
+
+		var bed1 = makeCube(19,0.7,19,-19,-0.5,12,new THREE.Color(0xff0000));
+		onReplaceTexture(bed1, "Textures/Carpet floor/fabric_pattern_tweed02-l-color.jpg", 5, 3, "Textures/Carpet floor/fabric_pattern_tweed02-l-normal.jpg");
+
+		var bed2 = makeCube(19,0.7,19,-19,-0.5,-15,new THREE.Color(0x00ff00));
+		onReplaceTexture(bed2, "Textures/Carpet floor/fabric_pattern_tweed02-l-color.jpg", 5, 3, "Textures/Carpet floor/fabric_pattern_tweed02-l-normal.jpg");
+
+		var toilet = makeCube(15,0.7,9,-24.5,-0.5,-2,new THREE.Color(0x0000ff));
+		onReplaceTexture(toilet, "Textures/Tile Floor/floor_tiles_04-l-color.jpg", 5, 3, "Textures/Tile Floor/floor_tiles_04-l-normal.jpg");
+
+		var ground3 = makeCube(0.1,2.7,4.03,-7.05,4.1,-12.77,new THREE.Color(0xffffff));
+		ground3.name = 'TV';
+		ground3.onClick = function()
+		{
+			console.log("aseflrng");
+			this.material.color = new THREE.Color(Math.random(), Math.random(), Math.random());
+		}
 
 		
 	}
 
 
+//bedroom
+		makeZacLight(-6, -6, 2.8, 0.5);
+
+	//bedroom2
+		makeZacLight(-7.4, 4.5, 2.8, 0.5);
+
+	//bathroom
+		makeZacLight(-8.4,-1, 2.8, 0.3);
+	
+	//Couch/table
+		makeZacLight( -0.5, -7, 2.8, 0.4);
+	//Kitchen
+		makeZacLight( -0.5, 3.5, 2.8, 0.5);
+		/*
 	makeLight(-22.57, -15.33, 2);
 	makeLight(-22.57, 11.67, 2);
 	makeLight(-27.53, -2.04, 1);
@@ -135,32 +180,26 @@ function init()
 	makeLight( 1.93, -1.33, 1);
 	makeLight(-9.07, 16.67, 1);
 	makeLight( 1.93, 16.67, 1);
+	*/
 
 	ground = makeCube(1000,1,700,0,-1,0,new THREE.Color(0x2FC313));
 
-	var ground2 = makeCube(40,0.6,48,-9.5,-0.5,-2,new THREE.Color(0xffffff));
-	onReplaceTexture(ground2, "JimJs/wood floor.jpg");
-
-	var bed1 = makeCube(19,0.7,19,-19,-0.5,12,new THREE.Color(0xff0000));
-	//onReplaceTexture(bed1, "JimJs/wood floor.jpg");
-
-	var bed2 = makeCube(19,0.7,19,-19,-0.5,-15,new THREE.Color(0x00ff00));
-
-	var toilet = makeCube(15,0.7,9,-24.5,-0.5,-2,new THREE.Color(0x0000ff));
-	onReplaceTexture(toilet, "Textures/Tile Floor/floor_tiles_04-l-color.jpg", 5, 3, "Textures/Tile Floor/floor_tiles_04-l-normal.jpg");
-
-	var ground3 = makeCube(0.1,2.7,4.03,-7.05,4.1,-12.77,new THREE.Color(0xffffff));
-
-	ground3.name = 'TV';
-	ground3.onClick = function()
-	{
-		console.log("aseflrng");
-		this.material.color = new THREE.Color(Math.random(), Math.random(), Math.random());
-	}
-
-
 	
-	loader = new JimFBX(2.7);
+	var loader = new JimFBX(2.7);
+
+
+
+	//lights
+		//bedroom
+			loader.load('Prop_Lights_03.fbx', -6, 3.8, -6, 45);
+		//Bedroom2
+			loader.load('Prop_Lights_03.fbx', -7.4, 3.8, 4.5, 45);
+		//bathroom
+			loader.load('Prop_Lights_03.fbx', -8.4, 3.8, -1, 45);
+		//Living room
+			loader.load('Prop_Lights_03.fbx', -0.5, 3.8, -7, 45);
+		//Kitchen
+			loader.load('Prop_Lights_03.fbx', -0.5, 3.8, 3.5, 45);
 
 //toilet
 loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180);
