@@ -77,7 +77,7 @@ function initOutline()
 			selectedObjects = [];
 			selectedObjects.push( intersects[ 0 ].object );
 			outlinePass.selectedObjects = selectedObjects;
-			console.log(selectedObjects.length);
+			//console.log(selectedObjects.length);
 		}
 	}
 }

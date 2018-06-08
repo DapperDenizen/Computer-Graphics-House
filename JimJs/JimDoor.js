@@ -168,6 +168,7 @@ function JimUpdate()
 	// if is in infinity mode
 	if(isInfinity_JimDoor)
 	{
+<<<<<<< HEAD
 		//get the distance from camera to centre
 		var d = camera.position.distanceTo( new THREE.Vector3( 0, 0, 0 ) );
 
@@ -190,6 +191,27 @@ function JimUpdate()
 			 camera.position.z/10
 			);
 		}
+=======
+		//controls.reset();
+
+		//console.log("zoom from "+camera.position.x);
+		camera.position.set
+		(
+		 camera.position.x*10,
+		 camera.position.y*10,
+		 camera.position.z*10
+		);
+
+		//console.log("to "+camera.position.x);
+	}else if(d>=100)
+	{
+		camera.position.set
+		(
+		 camera.position.x/10,
+		 camera.position.y/10,
+		 camera.position.z/10
+		);
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 	}
 	
 }
@@ -264,6 +286,10 @@ function makeWindows(posX, posY, sizeX, sizeY)
 function makeWall2(posX, posY, sizeX, sizeY)
 {
 	var wall = makeCube(sizeX, 10, sizeY, posX,5,posY, new THREE.Color(1,1,1));
+<<<<<<< HEAD
+=======
+	//console.log(isUsingTexture_JimDoor);
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 	if(isUsingTexture_JimDoor)
 	{
 		onReplaceTexture(wall, "Textures/Plaster Wall/eisklotz_plaster-01-l-color.jpg", 1, 1, "Textures/Plaster Wall/eisklotz_plaster-01-l-normal.jpg");

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>house</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var container, stats;
+var controls;
+var camera, scene, renderer;
+
+var gridHelper;
+
+
+var ground;
+var params = { opacity: 0.5 };
+</script>
+<script type="text/javascript" src="three.js"></script>
+
+<script src="js/Projector.js"></script>
+<script src="js/CanvasRenderer.js"></script>
+<script src="js/stats.min.js"></script>
+<script src="js/FBXLoader.js"></script>
+<script src="js/OrbitControls.js"></script>
+<script src="js/dat.gui.min.js"></script>
+<script src="js/inflate.min.js"></script>
+
+<!--outline-->
+<script src="js/Detector.js"></script>
+<script src="js/CopyShader.js"></script>
+<script src="js/FXAAShader.js"></script>
+<script src="js/EffectComposer.js"></script>
+<script src="js/RenderPass.js"></script>
+<script src="js/ShaderPass.js"></script>
+<script src="js/OutlinePass.js"></script>
+
+
+<script src="JimJs/JimDoor.js"></script>
+<script src="JimJs/JimFBX.js"></script>
+<script src="JimJs/customOutline.js"></script>
+
+
+<script src="js/GuiSpawner.js"></script>
+<script src="Grid.js"></script>
+<script src="Furniture.js"></script>
+<script type="text/javascript">
+
+//variables
+var heldItem;
+var itemHeld  = false;
+var movingX = 0;
+var movingZ = 0;
+var thingY = 0;
+var returnPositionX;
+var returnPositionZ;
+var furnitures = [];
+var floorArray = [];
+var grid = new Grid(30,30,0,-5,0);
+//raycast
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+//
+
+init();
+animate();
+
+
+function init() 
+{
+
+	container = document.createElement( 'div' );
+	document.body.appendChild( container );
+
+	scene = new THREE.Scene();
+
+	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+	camera.position.set(0,30,0);
+	camera.rotateX(-Math.PI/2);
+	controls = new THREE.OrbitControls( camera );
+
+
+	startJimDoor();
+	
+
+	gridHelper = new THREE.GridHelper( 100, 22 );
+	//scene.add( gridHelper );
+	// Cube
+
+
+	//initobj(0.1);
+
+	//initobj(10);
+	initobj(1);
+	function initobj(s)
+	{
+		scale = s;
+		makeWall2(-28.77, 12.32, 1, 19.04);
+		makeWall2(-26.49, 21.41, 5.32, 1);
+		makeWall2(1.12, -25.32, 2.13, 1.04);
+		makeWall2(9.99, -23.25, 1, 5.14);
+		makeWall2(-24.14, -6.13, 16.24, 1);
+		makeWall2(-28.6, -15.98, 1, 19.04);
+		makeWall2(-9.38, 12, 1, 19.04);
+		makeWall2(-9.36, -15.98, 1, 19.04);
+		makeWall2(-31.78, -5.25, 1, 2.72);
+		makeWall2(-9.29, -33.77, 1.36, 1.45);
+		makeWall2(9.95, -33.77, 1.36, 1.45);
+		makeWall2(9.23, -25.41, 2.35, 0.97);
+		makeWall2(-9.79, -6.12, 2, 1);
+		makeWall2(-24.24, 2.19, 16.24, 1);
+		makeWall2(-9.79, 2.18, 1.84, 0.97);
+		makeWall2(-17.08, -4.3, 1, 2.99);
+		makeWall2(8.49, 21.49, 4.08, 1);
+		makeWall2(-10.29, -25.32, 7.53, 1.04);
+		makeWall2(-26.62, -25.32, 5.55, 1.04);
+		makeWall2(-31.82, 1.34, 1, 2.66);
+		makeWall2(-11.04, 21.41, 6.25, 1);
+		makeWall2(-1.42, 21.42, 2.72, 1);
+		makeWall2(9.99, -1.9, 1, 17.79);
+		makeWall2(9.99, 19.32, 1, 5.14);
+
+		jimDoor(7.53, -25.39, false, true, false);
+		jimDoor(-11.24, -6.14, true, true , false);
+		jimDoor(-11.21, 2.16, false, true , false);
+		jimDoor(-17.02, 1.1, false, false, false);
+		jimDoor(-7.5, 21.6, false, true, true);
+
+		makeWindows(-31.78, -1.95, 1, 3.86);
+		makeWindows(-18.99, 21.39, 9.64, 1);
+		makeWindows(3.18, 21.44, 6.51, 1);
+		makeWindows(9.99, 11.9, 1, 9.84);
+		makeWindows(9.99, -15.71, 1, 9.84);
+		makeWindows(-18.96, -25.33, 9.88, 1);
+		makeWindows(-3.22, -25.33, 6.5, 1);
+		
+	}
+
+
+	makeLight(-22.57, -15.33, 2);
+	makeLight(-22.57, 11.67, 2);
+	makeLight(-27.53, -2.04, 1);
+	makeLight(-17.18, -2.04, 1);
+	makeLight(-9.07, -19.33, 1);
+	makeLight( 1.93, -19.33, 1);
+	makeLight(-9.07, -1.33, 1);
+	makeLight( 1.93, -1.33, 1);
+	makeLight(-9.07, 16.67, 1);
+	makeLight( 1.93, 16.67, 1);
+
+	ground = makeCube(1000,1,700,0,-1,0,new THREE.Color(0x2FC313));
+	floorArray.push( ground);
+	var ground2 = makeCube(40,0.6,48,-9.5,-0.5,-2,new THREE.Color(0xffffff));
+	onReplaceTexture(ground2, "JimJs/wood floor.jpg");
+	floorArray.push( ground2);
+	var bed1 = makeCube(19,0.7,19,-19,-0.5,12,new THREE.Color(0xff0000));
+	//onReplaceTexture(bed1, "JimJs/wood floor.jpg");
+
+	var bed2 = makeCube(19,0.7,18.2,-19,-0.5,-15.7,new THREE.Color(0x00ff00));
+
+	var toilet = makeCube(15,0.7,9,-24.5,-0.5,-2,new THREE.Color(0x0000ff));
+	onReplaceTexture(toilet, "Textures/Tile Floor/floor_tiles_04-l-color.jpg", 5, 3, "Textures/Tile Floor/floor_tiles_04-l-normal.jpg");
+
+	var ground3 = makeCube(0.1,2.7,4.03,-7.05,4.1,-12.77,new THREE.Color(0xffffff));
+
+	ground3.name = 'TV';
+	ground3.onClick = function()
+	{
+		console.log("aseflrng");
+		this.material.color = new THREE.Color(Math.random(), Math.random(), Math.random());
+	}
+	//shape presets
+	var smallBoxShape = [
+			[0,0,0,0],
+			[0,1,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+		];
+	var mediumBoxShape = [
+		[0,0,0,0],
+		[0,1,1,0],
+		[0,1,1,0],
+		[0,0,0,0],
+	];
+	var LargeBoxShape = [
+		[1,1,1,1],
+		[1,1,1,1],
+		[1,1,1,1],
+		[1,1,1,1],
+	];
+	var LargeRecShape = [
+		[0,1,1,0],
+		[0,1,1,0],
+		[0,1,1,0],
+		[0,1,1,0],
+	];
+	//
+
+	guiSpawner(grid);
+	
+	var loader = new JimFBX(2.7);
+/*
+//toilet
+loader.load('Prop_Shower.fbx', -9.83, 0, 0.6, 180,box1Shape,grid);
+loader.load('Prop_TowelRail.fbx', -8.17, 1.53, 0.64, 180,box1Shape,grid);
+loader.load('Prop_TowelSmall_Blue.fbx', -8.45, 1.42, 0.51, 180,box1Shape,grid);
+loader.load('Prop_TowelBig_Red.fbx', -7.96, 1.36, 0.51, 180,box1Shape,grid);
+loader.load('Prop_PowerPoint.fbx', -8.78, 0.61, 0.61, 180,box1Shape,grid);
+loader.load('Prop_BathroomCabinet_White.fbx', -7.31, 0, -2.06, 0,box1Shape,grid);
+loader.load('Prop_SoapDish.fbx', -6.82, 1.36, -1.9, 0,box1Shape,grid);
+loader.load('Prop_SoapDispencer.fbx', -7.97, 1.36, -1.9, 90,box1Shape,grid);
+loader.load('Prop_MirrorBrown.fbx', -7.31, 2.47, -2.06, 0,box1Shape,grid);
+loader.load('Prop_Toilet_01.fbx', -8.82, 0, -2.01, 0,box1Shape,grid);
+loader.load('Prop_Plant_01.fbx', -8.81, 1.71, -1.78, 90,box1Shape,grid);
+loader.load('Prop_ToiletRoll_02.fbx', -9.67, 1.44, -2.06, 0,box1Shape,grid);
+loader.load('Prop_ToiletBrush_01.fbx', -9.6, 0, -1.68, 90,box1Shape,grid);
+loader.load('Prop_WallArt_02.fbx', -8.85, 2.61, -2.02, 0,box1Shape,grid);
+
+//living room
+loader.load('Prop_Flower_Pot_01.fbx', -3.02, -0.35, -2.9, 0);
+loader.load('Prop_Big_Chair_01.fbx', -1.07, -0.35, -8.25, 0);
+loader.load('Prop_Cushion_02.fbx', -1.1, 0.4, -8.26, 33.52);
+loader.load('Prop_Cushion_01.fbx', 2.5, 0.5, -6.34, 2.76);
+loader.load('Prop_Couch_02.fbx', 2.58, -0.35, -5.17, 270);
+loader.load('Prop_Small_Table_03.fbx', -0.69, -0.35, -5.06, 90);
+loader.load('Prop_Game_01.fbx', -0.86, 0.28, -4.99, 326.19);
+loader.load('Prop_Game_Pad.fbx', -0.73, 0.29, -4.29, 127.21);
+loader.load('Prop_Small_Table_01.fbx', -2.74, -0.35, -4.94, 90);
+loader.load('Prop_Sound_System.fbx', -2.87, 0.31, -5.64, 90);
+loader.load('Prop_Tv_06.fbx', -2.68, 0.77, -4.73, 90);
+loader.load('Prop_Vcr.fbx', -2.87, -0.08, -4.27, 90);
+loader.load('Prop_Game_Console.fbx', -2.5, 0.79, -5.99, 90);
+loader.load('Prop_Game_02.fbx', -3.07, 0.75, -5.69, 179.05);
+loader.load('Prop_Joystick.fbx', -2.95, 0.78, -6.13, 89.05);
+loader.load('Prop_Fireplace_01.fbx', 2.92, -0.35, -0.93, 270);
+loader.load('Prop_Candle_02.fbx', 3.13, 1.4, -1.84, 90);
+loader.load('Prop_Candle_02.fbx', 3.13, 1.4, 0.02, 90);
+loader.load('Prop_Curtains_Blue.fbx', 3.45, -0.5, -6, 270);
+
+//kitchen
+loader.load('Prop_Table_03.fbx', -0.96, 0, 2.9, 90);
+    loader.load('Prop_Turkey_02.fbx', -0.95, 1.51, 2.9, 90);
+    loader.load('Prop_Food_Bowl_01.fbx', -0.89, 1.58, 3.9, 90);
+    loader.load('Prop_Plate_01.fbx', -1.63, 1.54, 3.97, 90);
+    loader.load('Prop_Plate_01.fbx', -1.65, 1.54, 1.75, 180);
+    loader.load('Prop_Plate_01.fbx', -0.27, 1.54, 1.75, 180);
+    loader.load('Prop_Plate_01.fbx', -0.25, 1.54, 3.97, 90);
+    loader.load('Prop_Food_Bowl_02.fbx', -0.24, 1.58, 3.19, 90);
+    loader.load('Prop_Food_Bowl_03.fbx', -0.87, 1.58, 1.98, 90);
+    loader.load('Prop_Fork_01.fbx', -0.26, 1.57, 4.54, 90);
+    loader.load('Prop_Knife_01.fbx', -0.31, 1.57, 1.2, 90);
+    loader.load('Prop_Fork_01.fbx', -1.62, 1.57, 4.54, 270);
+    loader.load('Prop_Knife_01.fbx', -1.64, 1.57, 4.38, 270);
+    loader.load('Prop_Knife_01.fbx', -1.64, 1.57, 1.2, 270);
+    loader.load('Prop_Fork_01.fbx', -0.3, 1.57, 1.35, 90);
+    loader.load('Prop_Knife_01.fbx', -0.27, 1.57, 4.38, 90);
+    loader.load('Prop_Fork_01.fbx', -1.62, 1.57, 1.35, 270);
+    loader.load('Prop_Chair_06.fbx', -2.35, 0, 3.92, 90);
+    loader.load('Prop_Chair_06.fbx', 0.66, 0, 3.88, 270);
+    loader.load('Prop_Chair_06.fbx', -2.35, 0, 2.19, 90);
+    loader.load('Prop_Chair_06.fbx', 0.64, 0, 1.98, 270);
+loader.load('Prop_KitchenSink_Black.fbx', 4.92, 0, 2.19, 270);
+    loader.load('Prop_Microwave.fbx', 2.9, 1.36, 3.4, 270);
+    loader.load('Prop_PlateDryer.fbx', 2.9, 1.35, 2.67, 0);
+    loader.load('Prop_Cupboards_Black.fbx', 3.41, 2.5, 3.82, 270);
+loader.load('Prop_Oven_White.fbx', 2.81, 0, 5.95, 270);
+    loader.load('Prop_RangeHood.fbx', 3.05, 0, 5.98, 270);
+loader.load('Prop_Fridge_01.fbx', 2.89, 0, 6.99, 270);
+    loader.load('Prop_Plant_02.fbx', 2.79, 2.06, 7.01, 0);
+loader.load('Prop_Curtains_Blue.fbx', 0.95, -0.5, 7.7, 180);
+loader.load('Prop_WallArt_01.fbx', -3.22, 2.49, 5.62, 90);
+loader.load('Prop_WallArt_03.fbx', 3.46, 2.49, -1.5, 270);
+loader.load('Prop_Lamp_06.fbx', 2.98, 0, 1.61, 0);
+
+//bedroom
+loader.load('Prop_Game_Console.fbx', -7.61, 0.03, 4.56, 240.37);
+    loader.load('Prop_Game_01.fbx', -6.8, 0, 3.22, 240.37);
+    loader.load('Prop_Game_02.fbx', -8.24, 0.03, 2.8, 240.37);
+    loader.load('Prop_Game_Pad.fbx', -7.63, 0.02, 3.76, 240.37);
+    loader.load('Prop_Game_Pad.fbx', -9.16, 0.02, 4.4, 318.3);
+loader.load('Prop_Wardrobe_02.fbx', -7.21, 0, 1.65, 0);
+loader.load('Prop_Lamp_06.fbx', -4.03, 0, 7.2, 0);
+loader.load('Prop_WallArt_01.fbx', -3.75, 2.96, 4.65, 270);
+loader.load('Prop_Small_Table_04.fbx', -4.25, 0, 5.85, 90);
+    loader.load('Prop_Tv_03.fbx', -4.19, 0.7, 5.82, 270);
+    loader.load('Prop_Bunny_Ear.fbx', -4.17, 1.62, 5.83, 90);
+loader.load('Prop_SingleBed_Pink.fbx', -8.19, 0, 6.4, 90);
+loader.load('Prop_Mirror.fbx', -9.27, 2.52, 1.0, 0);
+loader.load('Prop_Cupboard_07.fbx', -10.04, 0, 4.65, 90);
+    loader.load('Prop_Lamp_04.fbx', -10.09, 1.44, 4.62, 0);
+loader.load('Prop_Draw_02.fbx', -4.16, 0, 3.75, 270);
+    loader.load('Prop_Books_02.fbx', -4.08, 1.57, 4.24, 0);
+    loader.load('Prop_Plant.fbx', -4.18, 1.56, 4.3, 0);
+    loader.load('Prop_Plant_03.fbx', -4.06, 1.56, 3.75, 0);
+loader.load('Prop_Draw_02.fbx', -9.27, 0, 1.51, 0);
+    loader.load('Prop_Plant_03.fbx', -8.86, 1.56, 1.56, 0);
+
+//bedroom 2
+loader.load('Prop_BunkBed_Blue.fbx', -9.11, 0, -6.51, 180);
+loader.load('Prop_Desk_01.fbx', -4.42, 0, -5.66, 270);
+    loader.load('Prop_Computer_Mouse.fbx', -4.85, 1.49, -6.54, 270);
+    loader.load('Prop_Computer_Keyboard.fbx', -4.94, 1.49, -5.65, 270);
+    loader.load('Prop_Computer_Case.fbx', -4.3, 1.49, -4.81, 270);
+    loader.load('Prop_Computer_Screen.fbx', -4.33, 1.49, -5.64, 270);
+    loader.load('Prop_Books_02.fbx', -5.1, 1.49, -6.79, 270);
+    loader.load('Prop_Desk_Lamp.fbx', -4.06, 1.48, -4.3, 270);
+loader.load('Prop_Shelf_013.fbx', -6.58, 0, -8.84, 0);
+    loader.load('Prop_Books_02.fbx', -6.64, 0.3, -7.9, 0);
+    loader.load('Prop_Lamp_01.fbx', -6.54, 1.57, -8.83, 0);
+loader.load('Prop_Shelf_08.fbx', -4.87, 0, -8.76, 0);
+loader.load('Prop_Desk_Chair.fbx', -6.25, 0, -6.09, 29.03);
+    loader.load('Prop_Desk_Chair_Base.fbx', -6.25, 0, -6.09, 29.03);
+loader.load('Prop_Insect_Frame_03.fbx', -7.28, 2.23, -2.6, 180);
+//*/
+	loader.onLoad();
+	
+	//this.furnitures = loader.furnitures;
+	furnitures = loader.getFurnitures();
+	renderer = new THREE.WebGLRenderer();
+	//renderer = new THREE.CanvasRenderer();
+
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	container.appendChild( renderer.domElement );
+
+	stats = new Stats();
+	container.appendChild( stats.dom );
+	initOutline();
+
+}
+//Control functions
+
+function onClick(event) {
+//raycast
+raycaster.setFromCamera(mouse, camera);
+// calculate objects intersecting the picking ray
+var intersects = raycaster.intersectObjects(furnitures,true);
+//this checks if the array has hit thing1
+console.log(furnitures);
+		if (intersects.length > 0) {
+				//console.log(intersects);
+				console.log(intersects[0].object);
+			if (intersects[0].object.parent.name == "Furniture") {
+					//itemHeld means thing1 will travel with the mouse on the plane
+				if(itemHeld){
+						//dropping off
+					if(intersects[0].object.parent.parent.CheckSittingOn()){
+						debugGrid = null;
+						itemHeld = false;
+						heldItem = null;
+					}else{
+						//console.log(returnPosition);
+						heldItem.position.set(returnPositionX,thingY,returnPositionZ);
+						itemHeld = false;
+						heldItem = null;
+		}
+			}else{
+						//picking up
+						returnPositionX = intersects[0].object.position.x;
+						returnPositionZ = intersects[0].object.position.z;
+						thingY = intersects[0].object.position.y;
+						console.log(thingY);
+						heldItem = intersects[0].object
+						//returnPosition = intersects[0].object.position;
+						itemHeld = true;
+			}
+					
+		}
+
+	}
+
+}
+function onMouseMove(event) {
+if(itemHeld){
+mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+}
+}
+
+window.addEventListener('mousemove', onMouseMove, false);
+window.addEventListener('mousedown', onClick, false);
+//
+function animate() 
+{
+	if(itemHeld){
+				//raycast onto the floor
+				raycaster.setFromCamera(mouse, camera);
+				var intersects = raycaster.intersectObjects(floorArray);			
+				if(intersects[0] != null){
+				var tempNode = grid.nodeFromWorldPoint(intersects[0].point);
+				movingX = tempNode.xPos;
+				movingZ = tempNode.yPos;
+				}
+				heldItem.position.set(movingX, thingY, movingZ);
+			}
+	stats.update();
+	render();
+	requestAnimationFrame( animate );
+
+}
+
+function render() 
+{
+	JimUpdate();
+	composer.render();
+	//renderer.render( scene, camera );
+
+}
+
+</script>
+</body>
+</html>

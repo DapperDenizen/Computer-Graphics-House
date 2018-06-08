@@ -1,23 +1,64 @@
 
+<<<<<<< HEAD
 //this file is to import the FBX file from SimpleInteriorsHouses
+=======
+this.furnitures = [];
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 function JimFBX(scale)
 {
 	
 	this.jimObjs = [];
+<<<<<<< HEAD
 	this.texturePic;
+=======
+	this.calebObjs = [];
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 	this.loader = new THREE.FBXLoader();
 	this.scale = scale;
 	var path = "SimpleInteriorsHouses/Textures/SimpleInteriorsHouses.png";
 	this.textureLoader = new THREE.TextureLoader();
 	this.textureLoader.setCrossOrigin("anonymous");
 
+<<<<<<< HEAD
 	//this function add the info to the array
 	this.load = function(name, posX, posY, posZ, rotation)
+=======
+	this.load = function(name, posX, posY, posZ, rotation, shape, gridRef)
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 	{
-		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation));
+		this.jimObjs.push(new JimObj(name, posX, posY, posZ, rotation, shape, gridRef));
+	}
+	this.getFurnitures = function()
+	{
+		return furnitures;
 	}
 
+<<<<<<< HEAD
 	//this function go though all the obj in the array and import them
+=======
+	this.spawn = function(name, posX, posY, posZ, rotation, shape, gridRef)
+	{
+		this.calebObjs.push(new JimObj(name, posX, posY, posZ, rotation, shape, gridRef));
+	}
+	
+	this.onClick = function()
+	{
+		var n = this.calebObjs;
+		var l = this.loader;
+		var s = this.scale;
+		this.textureLoader.load(path, function (texture) 
+		{
+		    for (var i = n.length - 1; i >= 0; i--) 				
+				{
+				//console.log('SimpleInteriorsHouses/Models/'+n[i].name);
+				l.load('SimpleInteriorsHouses/Models/'+n[i].name, initObj(n[i], scale, texture));
+				break;
+				}
+			
+	    });
+	}
+	
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 	this.onLoad = function()
 	{
 		var n = this.jimObjs;
@@ -29,8 +70,12 @@ function JimFBX(scale)
 			//go though the array
 		    for (var i = n.length - 1; i >= 0; i--) 
 			{
+<<<<<<< HEAD
 				console.log('loading SimpleInteriorsHouses/Models/'+n[i].name);
 				//load the file
+=======
+				//console.log('SimpleInteriorsHouses/Models/'+n[i].name);
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 				l.load('SimpleInteriorsHouses/Models/'+n[i].name, initObj(n[i], scale, texture));
 			}
 			
@@ -70,8 +115,26 @@ function JimFBX(scale)
 			geo.rotateY((obj.rotation/180) *Math.PI);
 			
 			geo.position.set(obj.posX * scale, obj.posY * scale, obj.posZ * scale);
+<<<<<<< HEAD
 			scene.add(geo);
 			//replace texture
+=======
+			var furniture = new THREE.Group();
+			var furnitureRef = new Furniture(geo,obj.shape,obj.gridRef,new THREE.Vector3(obj.posX,obj.posY,obj.posZ));
+			geo.name = "Furniture";
+			furniture.add(geo);
+			furnitures.push(furniture);
+
+			furniture.RotateShape = function(){
+				furnitureRef.RotateShape();
+				}
+				furniture.CheckSittingOn = function(){
+				return furnitureRef.CheckSittingOn();
+				}
+
+			scene.add(furniture);
+			//scene.add(geo);
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 			geo.traverse(function (child) 
 		    {
 			    if (child instanceof THREE.Mesh) 
@@ -91,14 +154,21 @@ function JimFBX(scale)
 	
 }
 
+<<<<<<< HEAD
 //this is the format to save info 
 function JimObj(name, posX, posY, posZ, rotation) 
+=======
+
+function JimObj(name, posX, posY, posZ, rotation, shape, gridRef) 
+>>>>>>> 055cdbe7b44b79f642d1e0ae9265246db51da612
 {
 	this.name=name;
 	this.posX=posX;
 	this.posY=posY;
 	this.posZ=posZ;
 	this.rotation=rotation;
+	this.shape = shape;
+	this.gridRef = gridRef;
 }
 
 
@@ -141,7 +211,7 @@ function onReplaceTexture(mesh, path, x, y, normalMap)
 			    {
 			        // apply texture
 			        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-			        console.log(x);
+			        //console.log(x);
 					texture.repeat.set( 1, 1 );
 			        child.material.normalMap = texture;
 			        child.material.needsUpdate = true;
